@@ -1,0 +1,113 @@
+body{
+    background-color: #194E48;
+    border-style: hidden hidden solid hidden;
+    border-color: white;
+    border-width: 1px;
+    padding-bottom: 30px;
+    margin: 0px;
+}
+
+.header{
+    border-bottom: white;
+    border-style: hidden hidden solid hidden;
+    border-width: 0.1px;
+    width: 100%;
+}
+
+.logo-fb{
+    padding-top: 20px;
+    padding-left: 10px;
+    display: flex;
+    font-family: Roboto;
+    color: white;
+    gap: 10px;
+    justify-content: center;
+}
+
+.logo-fb div{
+    padding-top: 5px;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.header img{
+    height: 50px;
+}
+
+.register-fb {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.mainbox-fb{
+    border-style: solid;
+    width: 400px;
+    display: flex;
+    border-width: 2px;
+    background-color: #B3D337;
+    justify-content: center;
+    border-color:#B3D337;
+    
+}
+
+h1{
+    color: white;
+    font-family: Roboto;
+}
+
+h3{
+    align-self: center;
+    font-family: IBM Plex Sans;
+    color: white;
+}
+
+.input-fb{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px;
+    
+}
+
+.input-fb p{
+    margin-bottom: 1px;
+    font-size: 18px;
+    font-family: IBM Plex Sans;
+}   
+
+input {
+    margin-top: 1px;
+    height: 20px;
+    width: 200px;
+    
+}
+
+.buttons-fb{
+    display: flex;
+    gap: 5px;
+    
+}
+
+.buttons-fb p:hover{
+    background-color: gray;
+    border-color: gray;
+}
+
+.buttons-fb p{
+    padding: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color:#B3D337;
+    background-color: #B3D337;
+    font-family: IBM Plex Sans;
+    
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+

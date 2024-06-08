@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Workspace</title>
+    <link rel = "stylesheet" href = "css/bookstyle.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+    <div class = "topnav-fb">
+    
+            <a href = "techindex.html">
+                <div class = "logo-fb">
+                    <img src = "imgs/rat.png">
+                    <div class = "title">Lab Rat</div>
+                </div>
+            </a>
+
+        <div class = "navoptions-fb">
+            <a href = "techlaboratories.html">
+                <div class = "nav-item">LABORATORIES</div>
+            </a>
+            
+            <a href = "techreservations.html">
+                <div class = "nav-item">ALL RESERVATIONS</div>
+            </a>
+            
+            <a href = "techprofile.html">
+                <div class = "nav-item">PROFILE</div>
+            </a>
+            
+            <a href = "login.html">
+            <div class = "nav-item">LOGOUT</div>
+            </a>
+            </div>
+
+            <a href = "techbook.html">
+            <div class = "book-fb">
+
+                <img src = "https://static-00.iconduck.com/assets.00/calendar-small-icon-931x1024-onc7jpcy.png">
+                <div class = "book-text">Book a Workspace</div>
+            
+    
+        </div>
+        </a>
+
+    </div>
+
+    <h1>Book a Workspace</h1>
+
+    <div class="datetimelab-fb">
+
+        <div class = "date">
+        <label for="dateInput">Date:</label>
+        <input type="date" id="dateInput">
+        </div>
+        
+        <div class="time">
+            <label for="timeFromDropdown">From:</label>
+            <select id="timeFromDropdown">
+                <option value="07:00">07:00 AM</option>
+                <option value="07:30">07:30 AM</option>
+                <option value="08:00">08:00 AM</option>
+                <option value="08:30">08:30 AM</option>
+                <option value="09:00">09:00 AM</option>
+                <option value="09:30">09:30 AM</option>
+                <option value="10:00">10:00 AM</option>
+                <option value="10:30">10:30 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="11:30">11:30 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="12:30">12:30 PM</option>
+                <option value="13:00">01:00 PM</option>
+                <option value="13:30">01:30 PM</option>
+                <option value="14:00">02:00 PM</option>
+                <option value="14:30">02:30 PM</option>
+                <option value="15:00">03:00 PM</option>
+                <option value="15:30">03:30 PM</option>
+                <option value="16:00">04:00 PM</option>
+                <option value="16:30">04:30 PM</option>
+                <option value="17:00">05:00 PM</option>
+                <option value="17:30">05:30 PM</option>
+                <option value="18:00">06:00 PM</option>
+                <option value="18:30">06:30 PM</option>
+                <option value="19:00">07:00 PM</option>
+                <option value="19:30">07:30 PM</option>
+                <option value="20:00">08:00 PM</option>
+                <option value="20:30">08:30 PM</option>
+                <option value="21:00">09:00 PM</option>
+            </select>
+        </div>
+        
+        <div class="time">
+            <label for="timeToDropdown">To:</label>
+            <select id="timeToDropdown">
+                <option value="07:00">07:00 AM</option>
+                <option value="07:30">07:30 AM</option>
+                <option value="08:00">08:00 AM</option>
+                <option value="08:30">08:30 AM</option>
+                <option value="09:00">09:00 AM</option>
+                <option value="09:30">09:30 AM</option>
+                <option value="10:00">10:00 AM</option>
+                <option value="10:30">10:30 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="11:30">11:30 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="12:30">12:30 PM</option>
+                <option value="13:00">01:00 PM</option>
+                <option value="13:30">01:30 PM</option>
+                <option value="14:00">02:00 PM</option>
+                <option value="14:30">02:30 PM</option>
+                <option value="15:00">03:00 PM</option>
+                <option value="15:30">03:30 PM</option>
+                <option value="16:00">04:00 PM</option>
+                <option value="16:30">04:30 PM</option>
+                <option value="17:00">05:00 PM</option>
+                <option value="17:30">05:30 PM</option>
+                <option value="18:00">06:00 PM</option>
+                <option value="18:30">06:30 PM</option>
+                <option value="19:00">07:00 PM</option>
+                <option value="19:30">07:30 PM</option>
+                <option value="20:00">08:00 PM</option>
+                <option value="20:30">08:30 PM</option>
+                <option value="21:00">09:00 PM</option>
+            </select>
+        </div>
+      
+        <div class="dropdown">
+          <label for="labNumber">Lab Number:</label>
+          <select id="labNumber">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      
+      </div>
+
+    
+      <div class = "mainbox-fb">
+
+        <h2>Select Seats to Reserve</h2>
+        <div class = "seats-grid">
+            <button class="seat" id ="seat1">1</button>
+            <button class="seat" id="seat2">2</button>
+            <button class="seat" id="seat3">3</button>
+            <button class="seat">4</button>
+            <button class="seat">5</button>
+            <button class="seat">6</button>
+            <button class="seat">7</button>
+            <button class="seat">8</button>
+            <button class="seat">9</button>
+            <button class="seat">10</button>
+        </div>
+
+        <label><input type = "checkbox">Anonymous Reservation</label><br>
+        
+        <button class = "submit"><b>Submit Reservation</b></button>
+
+      </div>
+
+      
+
+
+</body>
+
+
+
+
+
+</html>

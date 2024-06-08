@@ -1,0 +1,199 @@
+body{
+    background-color: #194E48;
+    border-style: hidden hidden solid hidden;
+    border-color: white;
+    border-width: 1px;
+    padding-bottom: 30px;
+    margin: 0px;
+}
+
+hr{
+    border: 1px;
+}
+
+.outermost-fb{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.topnav-fb{
+    width: 100%;
+    display: flex;
+    border-bottom: white;
+    border-style: hidden hidden solid hidden;
+    border-width: 0.1px;
+}
+
+.logo-fb{
+    padding-top: 20px;
+    padding-left: 40px;
+    display: flex;
+    font-family: Roboto;
+    color: white;
+    gap: 10px;
+}
+
+.logo-fb div{
+    padding-top: 5px;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.topnav-fb img{
+    height: 60px;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.navoptions-fb{
+    flex:1;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.navoptions-fb :hover{
+    color: #B3D337;
+}
+
+.nav-item{
+    font-family: Open Sans;
+    color: white;
+    margin: 50px;
+}
+
+
+
+.book-fb{
+    display: flex;
+    margin: 40px;
+    font-family: IBM Plex Sans;
+    border-style: hidden;
+    background-color: #B3D337;
+    padding: 10px;
+    padding-right: 25px;
+    gap:10px;
+    
+}
+
+.book-fb img {
+    height: 30px;
+}
+
+.book-text{
+    padding-top: 5px;
+}
+
+h1{
+    margin:0px;
+    padding-left: 30px;
+    padding-top: 30px;
+    font-family: Roboto;
+    color: white;
+}
+
+.datetimelab-fb{
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-left: 200px;
+    margin-right: 200px;
+    
+    
+}
+
+label{
+    font-family: Open Sans;
+    color: white;
+    font-size: 18px;
+}
+
+.mainbox-fb{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.mainbox-fb h2{
+    font-family: Open Sans;
+    color: white;
+}
+
+.seats-grid{
+    border-style: solid;
+    border-color: #B3D337;
+    border-radius: 10px;
+    background-color: #B3D337;
+    margin: 20px;
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-auto-rows: minmax(150px, 1fr);
+    height: 100%;
+   
+}
+
+.seat{
+    border-radius: 10px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    font-family: Roboto;
+    text-align: center;
+    font-size: 50px;
+    margin: 20px;
+    margin-left: 35px;
+    max-width: 60%;
+    max-height: 60%;
+}
+
+.seat:hover{
+    border-color:#194E48;
+    background-color: #194E48;
+    cursor: pointer;
+}
+
+.submit{
+    font-family: Open Sans;
+    font-size: 18px;
+    background-color: #B3D337;
+    border-color: #B3D337;
+    color: black;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.submit :hover{
+    color:#217e28;
+    cursor: pointer;
+}
+
+#seat1{
+    background-color: gray;
+    border-color: gray;
+}
+
+#seat2{
+    background-color: gray;
+    border-color: gray;
+}
+
+#seat3{
+    background-color: gray;
+    border-color: gray;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+}
