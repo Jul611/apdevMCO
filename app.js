@@ -3,6 +3,46 @@
 
 const express = require('express');
 const server = express();
+const mongoose = require('mongoose');
+const User = require('./models/user');
+
+const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
+mongoose.connect(dbURL)
+.then(() => {
+    console.log("Connected to Database");
+})
+.catch(() => {
+    console.log("Failed to connect to the Database");
+})
+
+server.get('/add-user', (req, res) => {
+    const user = new User(
+        {
+            email: 'julrquirante@gmail.com',
+            username: 'jul',
+            password: '123',
+            usertype: 'Student'   }
+    );
+
+    user.save()
+    .then((result) => {
+        res.send(result)
+        console.log('User created!')
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+
+server.get('/all-users', (req, res) => {
+    User.find()
+    .then((result) => {
+        res.send(result)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
 
 const bodyParser = require('body-parser')
 server.use(express.json()); 
@@ -113,3 +153,4 @@ const port =  process.env.PORT | 9090;
 server.listen(port, function(){
     console.log('Listening at port '+port);
 });
+
