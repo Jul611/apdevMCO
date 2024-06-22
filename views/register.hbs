@@ -1,67 +1,50 @@
-
-    <div class = "header">
-        <div class = "header">
-
-            <a href = "/login">
-                <div class = "logo-fb">
-                    <img src = "common/imgs/rat.png">
-                    <div class = "title">Lab Rat</div>
-                </div>
-            </a>
-            
-
-        </div>
+<div class="header">
+    <div class="header">
+        <a href="/">
+            <div class="logo-fb">
+                <img src="common/imgs/rat.png" alt="Lab Rat Logo">
+                <div class="title">Lab Rat</div>
+            </div>
+        </a>
     </div>
+</div>
 
-    <div class = "register-fb">
-
-        
-        <h1>Become a Lab Rat</h1>
-        
-        
-        <div class = "mainbox-fb">
-        
-        
-        
-            <div class = "input-fb">
+<div class="register-fb">
+    <h1>Become a Lab Rat</h1>
+    <div class="mainbox-fb">
+        <form action="/register" method="POST">
+            <div class="input-fb">
                 <p>Username</p>
-                <input type = "text">
+                <input type="text" name="username" required>
                 
                 <p>Email</p>
-                <input type = "email">
+                <input type="email" name="email" required>
+                
                 <p>Password</p>
-                <input type = "text">
+                <input type="password" name="password" required>
+                
                 <p>Re-enter Password</p>
-                <input type = "text">
+                <input type="password" name="password2" required>
+
+                <p>User Type</p>
+                <select name="usertype" required>
+                    <option value="student">Student</option>
+                    <option value="labTech">Lab Technician</option>
+                </select>
+                
                 <br>
-                <div class = "type-fb">
-                    
-                    
-                </div>
-                
-                
             </div>
-
+            <br>
             
+                <button type="submit" class="create-acc">Create Account</button>
             
-
-
+        </form>
     </div>
-    <br>
-    
-        
-    
-    <div class = "buttons-fb">
-        
-        <a href = "/techindex"><p>Create Lab Tech Account</p></a>
-        <a href = "/index"><p>Create Student Account</p></a>
-        
-         
-    </div>
-
-    
-    
-
-
-
-
+    {{#if errors}}
+        <ul>
+            {{#each errors}}
+                <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</div>

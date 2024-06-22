@@ -48,15 +48,17 @@ body{
     color: white;
 }
 
-.mainbox-fb{
+form{
     border-style: solid;
     width: 400px;
     display: flex;
+    flex-direction: column;
     border-width: 10px;
     border-radius: 10px;
     background-color: #B3D337;
     justify-content: center;
-    border-color:#B3D337
+    border-color:#B3D337;
+    align-items: center;
     
 }
 
@@ -76,25 +78,26 @@ input {
     margin-top: 1px;
     height: 20px;
     width: 200px;
-    
 }
 
 button{
-    background-color: #B3D337;
+    background-color: white;
     border-radius: 10px;
+    padding: 10px;
     border-color: #B3D337;
     border-style: solid;
     text-align: center;
     font-family: IBM Plex Sans;
-    font-size: 15px;
+    font-size: 18px;
 }
 
-button :hover{
-    background-color: white;
+button:hover{
+    background-color:gray;
+    border-color: gray;
+    cursor: pointer;
 }
 
 h2{
-    
     font-size: 18px;
 }
 
@@ -116,3 +119,4 @@ a :hover{
     color: gray;
     cursor: pointer;
 }
+

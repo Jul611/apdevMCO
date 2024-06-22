@@ -51,7 +51,7 @@ body{
     background-color: #B3D337;
     justify-content: center;
     border-color:#B3D337;
-    
+    align-items: center;
 }
 
 h1{
@@ -85,25 +85,23 @@ input {
     
 }
 
-.buttons-fb{
+.create-acc{
     display: flex;
-    gap: 5px;
-    
-}
-
-.buttons-fb p:hover{
-    background-color: gray;
-    border-color: gray;
-}
-
-.buttons-fb p{
+    margin: 20px;
     padding: 10px;
     border-style: solid;
     border-width: 2px;
     border-color:#B3D337;
-    background-color: #B3D337;
+    background-color: white;
     font-family: IBM Plex Sans;
+    font-size: 16px;
+    align-self: center;
     
+}
+
+.create-acc:hover{
+    background-color: gray;
+    cursor:pointer;
 }
 
 a {
@@ -111,3 +109,7 @@ a {
     color: black;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+}

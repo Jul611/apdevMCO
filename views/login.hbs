@@ -10,31 +10,41 @@
 
     <div class = "login-fb">
 
-        <h1>Welcome to Lab Rat!</h1>
-        <div class = "mainbox-fb">
-            
-            <div class = "input-fb">
+        <form action="/login" method="POST">
+            <div class="input-fb">
                 <p>Email</p>
-                <input type = "email">
+                <input type="email" name="email" value="{{email}}" required>
                 <br>
                 <p>Password</p>
-                <input type = "text">
+                <input type="password" name="password" required>
+                <input type="checkbox" name="remember">
                 
             </div>
-
-    </div>
-    <br>
-
-    <div class = "buttons-fb">
-        <a href = "/index"><button>Login as Student</button></a>
-        <a href = "/techindex"><button>Login as Lab Tech</button></a>
-    </div>
-
-    
+            <br>
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+        
+        
+        <br>
         <div class = "register-button">
             <h2>Don't have an account? Register <a href = "/register">Here!</a> </h2>
         </div>
     </a>
+        {{#if errors}}
+            <ul>
+                {{#each errors}}
+                    <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
+
+    </div>
+    <br>
+
     
 
-</body>
+    
+        
+    
+
+
