@@ -5,9 +5,23 @@ const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./models/user');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const MongoStore = require('connect-mongo');
+const handlebars = require("express-handlebars");
+
+server.set("view engine", "hbs");
+server.engine("hbs", handlebars.engine({
+    extname: "hbs"
+}));
+
+function errorFn(err) {
+    console.log('Error found. Please trace!');
+    console.error(err);
+}
+
+const User = require('./models/user');
+const Reservation = require('./models/reservation')
 
 const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
 mongoose.connect(dbURL)
@@ -21,22 +35,37 @@ mongoose.connect(dbURL)
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-
-
-server.use(express.json()); 
-server.use(express.urlencoded({ extended: true }));
-
 server.use(session({
     secret: 'hi',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    
 }));
+
+
+/* const sampleReservation = new Reservation({
+    date: '23/06/2024',
+    seatNum: '1',
+    labNum: '1',
+    startTime: '08:00 AM',
+    endTime: '10:00 AM',
+    reservedBy: 'John Doe',
+    isAnon: false
+});
+
+// Save the sample reservation to the database
+sampleReservation.save()
+    .then(savedReservation => {
+        console.log('Sample reservation saved:');
+        console.log(savedReservation);
+    })
+    .catch(err => console.error('Error saving reservation:', err))
 
 const handlebars = require('express-handlebars');
 server.set('view engine', 'hbs');
 server.engine('hbs', handlebars.engine({
     extname: 'hbs'
-}));
+})); */
 
 server.use(express.static('public'));
 
@@ -65,70 +94,64 @@ server.get('/techindex', function(req, resp){
 
 // POST login
 server.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
     let errors = [];
-    
+
     // Check fields
     if (!email || !password) {
         errors.push({ msg: 'Please fill in all fields' });
     }
 
     if (errors.length > 0) {
-        res.render('/login', {
+        return res.render('login', {
             layout: 'layoutLogin',
             title: 'Lab Rat Login',
             errors,
             email,
             password
         });
-    } else {
-        
-        try {
-            const user = await User.findOne({ email: email });
+    }
 
-            if (!user) {
-                errors.push({ msg: 'No user found with this email' });
-                res.render('login', {
-                    layout: 'layoutLogin',
-                    title: 'Lab Rat Login',
-                    errors,
-                    email,
-                    password
-                });
-            } else {
-                // Match password
-               bcrypt.compare(password, user.password, (err, isMatch) => {
-                    if (err) throw err;
-                    req.session.user = user;
+    try {
+        const user = await User.findOne({ email });
 
-                    if (isMatch) {
-                        // Password matched
-                        console.log('here0');
-                        if (user.usertype === 'student') {
-                            
-                            console.log('here1');
-                            res.redirect('/index');
-                        } else if (user.usertype === 'labTech') {
-                            
-                            console.log('here2');
-                            res.redirect('/techindex');
-                        }
-                    } else {
-                        errors.push({ msg: 'Incorrect password' });
-                        res.render('login', {
-                            layout: 'layoutLogin',
-                            title: 'Lab Rat Login',
-                            errors,
-                            email,
-                            password
-                        });
-                    }
-                });
-            }
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Server error');
+        if (!user) {
+            errors.push({ msg: 'No user found with this email' });
+            return res.render('login', {
+                layout: 'layoutLogin',
+                title: 'Lab Rat Login',
+                errors,
+                email,
+                password
+            });
         }
+
+        // Match password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            errors.push({ msg: 'Incorrect password' });
+            return res.render('login', {
+                layout: 'layoutLogin',
+                title: 'Lab Rat Login',
+                errors,
+                email,
+                password
+            });
+        }
+
+        // Password matched
+        req.session.user = user;
+
+        req.session.username = user.username;
+        if (user.usertype === 'student') {
+            return res.redirect('/index');
+        } else if (user.usertype === 'labTech') {
+            return res.redirect('/techindex');
+        }
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Server error');
     }
 });
 
@@ -205,7 +228,7 @@ server.post('/register', async (req, res) => {
                         newUser.password = hash;
                         // Save user
                         await newUser.save();
-                        res.redirect('/login');
+                        res.redirect('/');
                     });
                 });
             }
@@ -215,7 +238,6 @@ server.post('/register', async (req, res) => {
         }
     }
 });
-
 
 
 server.get('/studentlabs', function(req, resp){
@@ -247,9 +269,35 @@ server.get('/techreservations', function(req, resp){
 });
 
 server.get('/studentprofile', function(req, resp){
-    resp.render('studentprofile',{
-        layout: 'layoutProfile',
-        title: 'Student Profile'
+    console.log('Username in session:', req.session.username);
+    const studentSearchQuery = { username: req.session.username };
+
+    User.findOne(studentSearchQuery).lean().then(function (user) {
+        if (!user) {
+            return resp.status(404).send('User not found');
+        }
+
+        console.log(user); // Make sure you have the correct object keys here
+
+        resp.render('studentprofile', {
+            layout: 'layoutProfile',
+            title: 'Student Profile',
+            email: user.email,
+            username: user.username,
+            usertype: user.usertype,
+            desc: user.desc
+        });
+
+    }).catch(function (error) {
+        console.error('Error finding user:', error);
+        resp.status(500).send('Error finding user');
+    });
+});
+
+server.get('/studentprofileedit', function(req, resp){
+    resp.render('studentprofileedit',{
+        layout: 'layoutProfileEdit',
+        title: 'Edit Profile'
     });
 });
 
@@ -283,6 +331,25 @@ server.get('/techbook', function(req, resp){
         layout: 'layoutBook',
         title: 'Book Walk-in'
     });
+});
+
+// Define reservation route handler
+server.get('/api/reservations', async (req, res) => {
+    const { date, startTime, endTime, labNumber } = req.query;
+
+    try {
+        // Find reservations that overlap with the given date, time, and lab number
+        const reservations = await Reservation.find({
+            labNum: labNumber,
+            startTime: { $lte: endTime }, // Reservations that start before or exactly when the new reservation ends
+            endTime: { $gte: startTime }  // Reservations that end after or exactly when the new reservation starts
+        });
+
+        res.json(reservations);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
 });
 
 

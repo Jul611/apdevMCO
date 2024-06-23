@@ -1,42 +1,5 @@
-<div class = "topnav-fb">
-        
-                <a href = "index.html">
-                    <div class = "logo-fb">
-                        <img src = "common/imgs/rat.png">
-                        <div class = "title">Lab Rat</div>
-                    </div>
-                </a>
-        
-            <div class = "navoptions-fb">
-                <a href = "/studentlabs">
-                    <div class = "nav-item">LABORATORIES</div>
-                </a>
-                
-                <a href = "/studentreservations">
-                    <div class = "nav-item">MY RESERVATIONS</div>
-                </a>
-                
-                <a href = "/studentprofile">
-                    <div class = "nav-item">PROFILE</div>
-                </a>
-                
-                <a href = "/login">
-                <div class = "nav-item">LOGOUT</div>
-                </a>
-            </div>
-        
-            <a href = "/studentbook">
-                <div class = "book-fb">
-        
-                    <img src = "https://static-00.iconduck.com/assets.00/calendar-small-icon-931x1024-onc7jpcy.png">
-                    <div class = "book-text">Book a Workspace</div>
-                    
-            
-                </div>
-            </a>
+ {{>studentNav}}
 
-            
-        </div>
 
 
         <div class = "toppart-fb">
@@ -57,22 +20,24 @@
 
 
                 <img src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-                <h3>Username</h3>
-                <p class = "info">Email: julian_quirante@dlsu.edu.ph</p>
-                <p class = "info">User Type: Julian Quirante</p>
+                <h3>{{ username }}</h3>
+                <p class = "info">Email: {{ email }}</p>
+                <p class = "info">User Type: {{ usertype }}</p>
 
                 <div class = "buttons-fb">
-                    <button>Edit Profile</button>
+                    <a href="/studentprofileedit" id="edit-profile-btn">Edit Profile</a>
                     <button>Delete User</button>
                 </div>
             </div>
+
+            
 
             <div class = "right-fb">
 
                 <div class = "descbox-fb">
                     <p class = "title">Description</p>
                     <p class = desc>
-                        This user has not set a description yet.
+                        {{ desc }}
                     </p>
                     
 
@@ -99,3 +64,5 @@
 
 
         </div>
+
+

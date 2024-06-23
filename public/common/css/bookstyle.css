@@ -179,19 +179,9 @@ label{
     cursor: pointer;
 }
 
-#seat1{
-    background-color: gray;
-    border-color: gray;
-}
-
-#seat2{
-    background-color: gray;
-    border-color: gray;
-}
-
-#seat3{
-    background-color: gray;
-    border-color: gray;
+.seat.reserved {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 input[type="checkbox"] {

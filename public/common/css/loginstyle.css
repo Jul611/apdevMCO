@@ -41,6 +41,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
 .login-fb h2{
@@ -59,6 +60,7 @@ form{
     justify-content: center;
     border-color:#B3D337;
     align-items: center;
+    padding-bottom: 2vh;
     
 }
 
@@ -82,9 +84,9 @@ input {
 
 button{
     background-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
-    border-color: #B3D337;
+    border-color: gray;
     border-style: solid;
     text-align: center;
     font-family: IBM Plex Sans;
@@ -118,5 +120,25 @@ a {
 a :hover{
     color: gray;
     cursor: pointer;
+}
+
+.rememberme-fb{
+    display: flex;
+    
+}
+
+.rememberme-fb input{
+    width:30px;
+    margin: 0px;
+}
+
+.rememberme-fb label{
+    font-family: IBM Plex Sans;
+}
+
+.loginbutton-fb{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
 }
 

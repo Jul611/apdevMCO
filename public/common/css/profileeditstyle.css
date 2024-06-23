@@ -1,0 +1,168 @@
+body{
+    background-color: #194E48;
+    border-style: hidden hidden solid hidden;
+    border-color: white;
+    border-width: 1px;
+    padding-bottom: 30px;
+    margin: 0px;
+    
+}
+
+hr{
+    border: 1px;
+}
+
+h1{
+    margin:0px;
+    padding-left: 30px;
+    padding-top: 30px;
+    font-family: Roboto;
+    color: white;
+}
+.outermost-fb{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+.topnav-fb{
+    width: 100%;
+    display: flex;
+    border-bottom: white;
+    border-style: hidden hidden solid hidden;
+    border-width: 0.1px;
+}
+
+.logo-fb{
+    padding-top: 20px;
+    padding-left: 40px;
+    display: flex;
+    font-family: Roboto;
+    color: white;
+    gap: 10px;
+}
+
+.logo-fb div{
+    padding-top: 5px;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.topnav-fb img{
+    height: 60px;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.navoptions-fb{
+    flex:1;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.navoptions-fb :hover{
+    color: #B3D337;
+}
+
+.nav-item{
+    font-family: Open Sans;
+    color: white;
+    margin: 50px;
+}
+
+
+
+.book-fb{
+    display: flex;
+    margin: 40px;
+    font-family: IBM Plex Sans;
+    border-style: hidden;
+    background-color: #B3D337;
+    padding: 10px;
+    padding-right: 25px;
+    gap:10px;
+    
+}
+
+.book-fb img {
+    height: 30px;
+}
+
+.book-text{
+    padding-top: 5px;
+}
+
+.outer-fb{
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+}
+
+.editbox-fb{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border-color: #B3D337;
+    background-color: #B3D337;
+    font-family: IBM Plex Sans;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+.input-fb{
+    display: flex;
+    gap: 10px;
+}
+
+.input-fb label {
+    width: 175px;/* Adjust this width to align the labels */
+    text-align: right;
+}
+
+.input-fb input {
+    flex: 1;
+}
+
+.buttons-fb{
+    display: flex;
+    gap:3vh;
+}
+
+button{
+    font-family: IBM Plex Sans;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+}
+
+.buttons-fb a{
+    border-style: solid;
+    background-color: white;
+    border-color: white;
+    font-family: IBM Plex Sans;
+    font-size: 14px;
+}
+
+.buttons-fb a:hover{
+    background-color: gray;
+    border-color: gray;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: gray;
+    border-color: gray;
+    cursor: pointer;
+}
