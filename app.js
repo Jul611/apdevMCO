@@ -141,7 +141,7 @@ server.post('/login', async (req, res) => {
 
         // Password matched
         req.session.user = user;
-
+        // Store username
         req.session.username = user.username;
         if (user.usertype === 'student') {
             return res.redirect('/index');
@@ -161,8 +161,6 @@ server.get('/register', function(req, resp){
         title: 'Registration'
     });
 });
-
-
 
 // POST register
 server.post('/register', async (req, res) => {
@@ -273,9 +271,7 @@ server.get('/studentprofile', function(req, resp){
     const studentSearchQuery = { username: req.session.username };
 
     User.findOne(studentSearchQuery).lean().then(function (user) {
-        if (!user) {
-            return resp.status(404).send('User not found');
-        }
+        
 
         console.log(user); // Make sure you have the correct object keys here
 
@@ -295,10 +291,81 @@ server.get('/studentprofile', function(req, resp){
 });
 
 server.get('/studentprofileedit', function(req, resp){
-    resp.render('studentprofileedit',{
-        layout: 'layoutProfileEdit',
-        title: 'Edit Profile'
+    console.log('Username editing:', req.session.username);
+    const studentSearchQuery = { username: req.session.username };
+
+    User.findOne(studentSearchQuery).lean().then(function (user) {
+        
+        console.log(user); // Make sure you have the correct object keys here
+
+        resp.render('studentprofileedit', {
+            layout: 'layoutProfileEdit',
+            title: 'Student Profile',
+            username: user.username,
+            desc: user.desc,
+            pfp: user.pfp
+        });
+
+    }).catch(function (error) {
+        console.error('Error finding user:', error);
+        resp.status(500).send('Error finding user');
     });
+});
+
+server.use(bodyParser.urlencoded({ extended: true }));
+
+server.post('/studentprofileedit', function(req, resp){
+    const username = req.body.username;
+    const desc = req.body.desc;
+    const pfp = req.body.pfp;
+
+    console.log('Session username:', req.session.username);
+    console.log('Form data:', { username, desc, pfp });
+
+    const updateQuery = { username: req.session.username };
+    const updateData = {
+        username: username,
+        desc: desc,
+        pfp: pfp
+    };
+
+    User.findOneAndUpdate(updateQuery, updateData, { new: true }).then(function(updatedUser) {
+        
+        req.session.username = updatedUser.username;
+        console.log('User updated:', updatedUser);
+        resp.redirect('/studentprofile');
+    }).catch(function (error) {
+        console.error('Error updating user:', error);
+        resp.status(500).send('Error updating user');
+    });
+});
+
+server.post('/deleteUser', function(req, resp) {
+    const usernameToDelete = req.body.username;
+
+    User.findOneAndDelete({ username: usernameToDelete })
+        .then(function(deletedUser) {
+            if (!deletedUser) {
+                return resp.status(404).send('User not found');
+            }
+
+            console.log('User deleted:', deletedUser);
+
+            // Clear the session to log the user out
+            req.session.destroy(function(err) {
+                if (err) {
+                    console.error('Error destroying session:', err);
+                    return resp.status(500).send('Error logging out');
+                }
+                console.log('User logged out');
+                resp.sendStatus(200); // Send a success status
+                
+            });
+        })
+        .catch(function(error) {
+            console.error('Error deleting user:', error);
+            resp.status(500).send('Error deleting user');
+        });
 });
 
 server.get('/techprofile', function(req, resp){
@@ -332,27 +399,6 @@ server.get('/techbook', function(req, resp){
         title: 'Book Walk-in'
     });
 });
-
-// Define reservation route handler
-server.get('/api/reservations', async (req, res) => {
-    const { date, startTime, endTime, labNumber } = req.query;
-
-    try {
-        // Find reservations that overlap with the given date, time, and lab number
-        const reservations = await Reservation.find({
-            labNum: labNumber,
-            startTime: { $lte: endTime }, // Reservations that start before or exactly when the new reservation ends
-            endTime: { $gte: startTime }  // Reservations that end after or exactly when the new reservation starts
-        });
-
-        res.json(reservations);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server Error' });
-    }
-});
-
-
 
 const port =  process.env.PORT | 9090;
 server.listen(port, function(){

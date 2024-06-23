@@ -166,15 +166,47 @@ h4{
     font-size: 20px;
 }
 
-.buttons-fb{
+.buttons-fb {
     display: flex;
     margin-top: 80px;
 }
 
-.buttons-fb :hover{
-    background-color: #194E48;
-    border-color: #194E48;
+.buttons-fb a:hover {
+    background-color: gray;
+    border-color: gray;
     cursor: pointer;
+}
+
+.buttons-fb a, .buttons-fb button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid white;
+    font-family: Open Sans, sans-serif;
+    margin: 20px;
+    height: 25px;
+    font-size: 13.5px;
+    text-align: center;
+    padding: 0 10px; 
+    text-decoration: none; 
+}
+
+.buttons-fb button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.buttons-fb button:hover {
+    background-color: gray;
+    border-color: gray;
+    cursor: pointer;
+}
+
+.buttons-fb a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .info{
@@ -183,14 +215,7 @@ h4{
     margin: 0px;
 }
 
-button{
-    font-family: Open Sans;
-    background-color: white;
-    border-color: white;
-    border-style: solid;
-    margin: 20px;
-    height: 25px;
-}
+
 
 .right-fb{
     display: flex;

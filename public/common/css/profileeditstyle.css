@@ -102,7 +102,6 @@ a {
 
 .outer-fb{
     display: flex;
-    
     justify-content: center;
     align-items: center;
 }
@@ -138,6 +137,8 @@ a {
 .buttons-fb{
     display: flex;
     gap:3vh;
+    align-items: center;
+    justify-content: center;
 }
 
 button{
