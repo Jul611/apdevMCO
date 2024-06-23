@@ -4,12 +4,12 @@
 
         <div class = "toppart-fb">
             <h1>Profile</h1>
-            <div class = "search-fb">
-
-                <input type = "search" placeholder="Search User">
-                <button type = "submit">Search</button>
-
-            </div>
+            <form id="searchForm" action="/searchprofile" method="GET">
+                <div class="search-fb">
+                <input type="search" name="username" placeholder="Search User">
+                <button type="submit">Search</button>
+        </div>
+            </form>
             
         </div>
         
@@ -99,3 +99,4 @@ function deleteUser() {
 }
 
 
+</script>

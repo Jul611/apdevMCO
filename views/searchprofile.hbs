@@ -1,0 +1,71 @@
+ {{>studentNav}}
+
+
+
+        <div class = "toppart-fb">
+            <h1>Profile</h1>
+            <form id="searchForm" action="/searchprofile" method="GET">
+                <div class="search-fb">
+                <input type="search" name="username" placeholder="Search User">
+                <button type="submit">Search</button>
+        </div>
+            </form>
+            
+        </div>
+        
+
+        <div class = "profile-fb">
+
+        <div class="left-fb">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            <h3>{{ username }}</h3>
+            <p class="info">Email: {{ email }}</p>
+            <p class="info">User Type: {{ usertype }}</p>
+
+            <div class="buttons-fb">
+                <a href="/studentprofileedit">Edit Profile</a>
+                <button onclick="confirmDelete()">Delete User</button>
+            </div>
+        </div>
+
+            
+
+            <div class = "right-fb">
+
+                <div class = "descbox-fb">
+                    <p class = "title">Description</p>
+                    <p class = desc>
+                        {{ desc }}
+                    </p>
+                    
+
+                </div>
+
+                <div class = "reserved-fb">
+                    <p class = "title">Reserved Workspaces</p>
+                    <div class = reserved-grid>
+                        
+                        <p>Lab 1: Workspace 2</p>
+                        <p>Lab 3: Workspace 1</p>
+                       
+                        
+                        
+                
+                        
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+<script>
+
+
+
+</script>

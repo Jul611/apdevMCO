@@ -290,6 +290,33 @@ server.get('/studentprofile', function(req, resp){
     });
 });
 
+server.get('/searchprofile', function(req, resp) {
+    const searchUsername = req.query.username; // Get username from query parameter
+    console.log('search for', searchUsername);
+
+    User.findOne({ username: searchUsername }).lean().then(function(foundUser) {
+        if (!foundUser) {
+            // Return a JSON response indicating no user found
+            return resp.status(200).json({ message: 'User not found' });
+        }
+
+        // Render the profile view for the found user
+        resp.render('searchprofile', {
+            layout: 'layoutSearchProfile', // Adjust layout as needed
+            title: 'User Profile',
+            desc: foundUser.desc,
+            email: foundUser.email,
+            username: foundUser.username,
+            usertype: foundUser.usertype,
+            pfp: foundUser.pfp,
+        });
+
+    }).catch(function(error) {
+        console.error('Error searching for user:', error);
+        resp.status(500).send('Error searching for user');
+    });
+});
+
 server.get('/studentprofileedit', function(req, resp){
     console.log('Username editing:', req.session.username);
     const studentSearchQuery = { username: req.session.username };
