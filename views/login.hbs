@@ -39,9 +39,9 @@
         </div>
 
         {{#if errors}}
-            <ul>
+            <ul class="error-messages">
                 {{#each errors}}
-                    <li>{{this.msg}}</li>
+                    <b><li>{{this.msg}}</li></b>
                 {{/each}}
             </ul>
         {{/if}}

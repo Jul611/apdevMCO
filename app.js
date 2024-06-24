@@ -293,29 +293,44 @@ server.get('/studentprofile', function(req, resp){
 server.get('/searchprofile', function(req, resp) {
     const searchUsername = req.query.username; // Get username from query parameter
     console.log('search for', searchUsername);
+        
 
     User.findOne({ username: searchUsername }).lean().then(function(foundUser) {
-        if (!foundUser) {
-            // Return a JSON response indicating no user found
-            return resp.status(200).json({ message: 'User not found' });
+        if (foundUser) {
+            resp.render('searchprofile', {
+                layout: 'layoutSearchProfile', // Adjust layout as needed
+                title: 'User Profile',
+                desc: foundUser.desc,
+                email: foundUser.email,
+                username: foundUser.username,
+                usertype: foundUser.usertype,
+                pfp: foundUser.pfp,
+            });
+        }
+        else{
+            resp.render('nouser', {
+                layout: 'layoutNoUser',
+                title: 'User not Found'
+            });
         }
 
-        // Render the profile view for the found user
-        resp.render('searchprofile', {
-            layout: 'layoutSearchProfile', // Adjust layout as needed
-            title: 'User Profile',
-            desc: foundUser.desc,
-            email: foundUser.email,
-            username: foundUser.username,
-            usertype: foundUser.usertype,
-            pfp: foundUser.pfp,
-        });
+        
+        
 
     }).catch(function(error) {
         console.error('Error searching for user:', error);
         resp.status(500).send('Error searching for user');
     });
 });
+
+server.get('/nouser', function(req, resp){
+    resp.render('nouser',{
+        layout: 'layoutReservation',
+        title: 'All Reservations'
+    });
+});
+
+
 
 server.get('/studentprofileedit', function(req, resp){
     console.log('Username editing:', req.session.username);
@@ -396,11 +411,142 @@ server.post('/deleteUser', function(req, resp) {
 });
 
 server.get('/techprofile', function(req, resp){
-    resp.render('techprofile',{
-        layout: 'layoutProfile',
-        title: 'Tech Profile'
+    console.log('Username in session:', req.session.username);
+    const studentSearchQuery = { username: req.session.username };
+
+    User.findOne(studentSearchQuery).lean().then(function (user) {
+        
+
+        console.log(user); // Make sure you have the correct object keys here
+
+        resp.render('techprofile', {
+            layout: 'layoutProfile',
+            title: 'Tech Profile',
+            email: user.email,
+            username: user.username,
+            usertype: user.usertype,
+            desc: user.desc
+        });
+
+    }).catch(function (error) {
+        console.error('Error finding user:', error);
+        resp.status(500).send('Error finding user');
     });
 });
+
+server.get('/techprofileedit', function(req, resp){
+    console.log('Username editing:', req.session.username);
+    const studentSearchQuery = { username: req.session.username };
+
+    User.findOne(studentSearchQuery).lean().then(function (user) {
+        
+        console.log(user); // Make sure you have the correct object keys here
+
+        resp.render('techprofileedit', {
+            layout: 'layoutProfileEdit',
+            title: 'Tech Profile',
+            username: user.username,
+            desc: user.desc,
+            pfp: user.pfp
+        });
+
+    }).catch(function (error) {
+        console.error('Error finding user:', error);
+        resp.status(500).send('Error finding user');
+    });
+});
+
+server.post('/techprofileedit', function(req, resp){
+    const username = req.body.username;
+    const desc = req.body.desc;
+    const pfp = req.body.pfp;
+
+    console.log('Session username:', req.session.username);
+    console.log('Form data:', { username, desc, pfp });
+
+    const updateQuery = { username: req.session.username };
+    const updateData = {
+        username: username,
+        desc: desc,
+        pfp: pfp
+    };
+
+    User.findOneAndUpdate(updateQuery, updateData, { new: true }).then(function(updatedUser) {
+        
+        req.session.username = updatedUser.username;
+        console.log('User updated:', updatedUser);
+        resp.redirect('/techprofile');
+    }).catch(function (error) {
+        console.error('Error updating user:', error);
+        resp.status(500).send('Error updating user');
+    });
+});
+
+server.post('/techdeleteUser', function(req, resp) {
+    const usernameToDelete = req.body.username;
+
+    User.findOneAndDelete({ username: usernameToDelete })
+        .then(function(deletedUser) {
+            if (!deletedUser) {
+                return resp.status(404).send('User not found');
+            }
+
+            console.log('User deleted:', deletedUser);
+
+            // Clear the session to log the user out
+            req.session.destroy(function(err) {
+                if (err) {
+                    console.error('Error destroying session:', err);
+                    return resp.status(500).send('Error logging out');
+                }
+                console.log('User logged out');
+                resp.sendStatus(200); // Send a success status
+                
+            });
+        })
+        .catch(function(error) {
+            console.error('Error deleting user:', error);
+            resp.status(500).send('Error deleting user');
+        });
+});
+
+server.get('/techsearchprofile', function(req, resp) {
+    const searchUsername = req.query.username; // Get username from query parameter
+    console.log('search for', searchUsername);
+        
+
+    User.findOne({ username: searchUsername }).lean().then(function(foundUser) {
+        if (foundUser) {
+            resp.render('techsearchprofile', {
+                layout: 'layoutSearchProfile', // Adjust layout as needed
+                title: 'User Profile',
+                desc: foundUser.desc,
+                email: foundUser.email,
+                username: foundUser.username,
+                usertype: foundUser.usertype,
+                pfp: foundUser.pfp,
+            });
+        }
+        else{
+            resp.render('technouser', {
+                layout: 'layoutNoUser',
+                title: 'User not Found'
+            });
+        }
+
+    }).catch(function(error) {
+        console.error('Error searching for user:', error);
+        resp.status(500).send('Error searching for user');
+    });
+});
+
+server.get('/technouser', function(req, resp){
+    resp.render('technouser',{
+        layout: 'layoutReservation',
+        title: 'All Reservations'
+    });
+});
+
 
 server.get('/logout', (req, res) => {
     req.session.destroy((err) => {

@@ -142,3 +142,16 @@ a :hover{
     gap:5px;
 }
 
+.error-messages {
+    color: white;
+    font-size: 18px;
+    font-family: IBM Plex Sans;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    list-style-type: none; /* Remove default list styling */
+}
+
+.error-messages li {
+    margin-bottom: 5px; /* Add some space between error messages */
+}

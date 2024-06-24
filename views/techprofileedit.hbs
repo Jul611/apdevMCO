@@ -1,0 +1,35 @@
+{{>techNav}}
+
+<h1>Edit Profile</h1>
+
+<div class="outer-fb">
+   <div class="editbox-fb">
+      <form action="/techprofileedit" method="POST">
+         <div class="input-fb">
+            <label for="username">Edit Username:</label>
+            <input type="text" id="username" name="username" value="{{username}}">
+         </div><br>
+         
+         <div class="input-fb">
+            <label for="desc">Edit Description:</label>
+            <input type="text" id="desc" name="desc" value="{{desc}}">
+         </div><br>
+
+         <div class="input-fb">
+            <label for="pfp">Edit Profile Picture Link:</label>
+            <input type="text" id="pfp" name="pfp" value="{{pfp}}">
+         </div><br> 
+
+         <div class="buttons-fb">
+            <a href="/techprofile">Back to Profile</a>
+            <button type="submit">Save Changes</button>
+         </div>
+      </form>
+   </div>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(event) {
+    console.log('Form is being submitted');
+});
+</script>

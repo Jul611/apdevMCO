@@ -1,98 +1,50 @@
-<div class = "topnav-fb">
-        
-                <a href = "/techindex">
-                    <div class = "logo-fb">
-                        <img src = "common/imgs/rat.png">
-                        <div class = "title">Lab Rat</div>
-                    </div>
-                </a>
-        
-            <div class = "navoptions-fb">
-                <a href = "/techlabs">
-                    <div class = "nav-item">LABORATORIES</div>
-                </a>
-                
-                <a href = "/techreservations">
-                    <div class = "nav-item">MY RESERVATIONS</div>
-                </a>
-                
-                <a href = "/techprofile">
-                    <div class = "nav-item">PROFILE</div>
-                </a>
-                
-                <a href = "/logout">
-                <div class = "nav-item">LOGOUT</div>
-                </a>
-            </div>
-        
-            <a href = "/techbook">
-                <div class = "book-fb">
-        
-                    <img src = "https://static-00.iconduck.com/assets.00/calendar-small-icon-931x1024-onc7jpcy.png">
-                    <div class = "book-text">Book a Workspace</div>
-                    
-            
-                </div>
-            </a>
+ {{>techNav}}
 
-            
-        </div>
 
 
         <div class = "toppart-fb">
             <h1>Profile</h1>
-            <div class = "search-fb">
-
-                <input type = "search" placeholder="Search User">
-                <button type = "submit">Search</button>
-
-            </div>
+            <form id="searchForm" action="/techsearchprofile" method="GET">
+                <div class="search-fb">
+                <input type="search" name="username" placeholder="Search User">
+                <button type="submit">Search</button>
+        </div>
+            
+            </form>
             
         </div>
         
 
         <div class = "profile-fb">
 
-            <div class = "left-fb">
+        <div class="left-fb">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            <h3>{{ username }}</h3>
+            <p class="info">Email: {{ email }}</p>
+            <p class="info">User Type: {{ usertype }}</p>
 
-
-                <img src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-                <h3>Username</h3>
-                <p class = "info">Email: julian_quirante@dlsu.edu.ph</p>
-                <p class = "info">User Type: Julian Quirante</p>
-
-                <div class = "buttons-fb">
-                    <button>Edit Profile</button>
-                    <button>Delete User</button>
-                </div>
+            <div class="buttons-fb">
+                <a href="/techprofileedit">Edit Profile</a>
+                <button onclick="confirmDelete()">Delete User</button>
             </div>
+        </div>
+
+            
 
             <div class = "right-fb">
 
                 <div class = "descbox-fb">
                     <p class = "title">Description</p>
                     <p class = desc>
-                        This user has not set a description yet.
+                        {{ desc }}
                     </p>
                     
 
                 </div>
 
                 <div class = "reserved-fb">
-                    <p class = "title">Experience</p>
-                    <div class = reserved-grid>
-                        
-                        <p>Worked at McDonalds</p>
-                        <p>Refrigerator Repairman</p>
-                        <p>Can cook Pancit Canton</p>
-                        <p>Made this website</p>
-                        <p>Finished college at DLSU</p>
-                        <p>Has a Lambo</p>
-                        
-                        
-                
-                        
-                    </div>
+                    <p class = "title">Reservations</p>
+                    
                 </div>
 
 
@@ -102,3 +54,43 @@
 
 
         </div>
+
+
+<script>
+function confirmDelete() {
+    if (confirm("Are you sure you want to delete your account?")) {
+        // User confirmed, proceed with deletion
+        deleteUser();
+    } else {
+        // User cancelled, do nothing
+    }
+}
+
+function deleteUser() {
+    fetch('/deleteUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: '{{ username }}' }), // Adjust as per your server's requirement
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('User deleted successfully');
+            // Redirect or show a success message as needed
+            window.location.href = '/logout'; // Redirect to login page after successful deletion
+        } else {
+            console.error('Failed to delete user');
+            // Handle error scenario
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+        // Handle error scenario
+    });
+}
+
+
+
+
+</script>
