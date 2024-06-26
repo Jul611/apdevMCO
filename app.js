@@ -9,6 +9,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
+const router = express.Router();
 
 server.set("view engine", "hbs");
 server.engine("hbs", handlebars.engine({
@@ -21,7 +22,8 @@ function errorFn(err) {
 }
 
 const User = require('./models/user');
-const Reservation = require('./models/reservation')
+const Reservation = require('./models/reservation');
+const Seat = require('./models/seat');
 
 const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
 mongoose.connect(dbURL)
@@ -34,6 +36,7 @@ mongoose.connect(dbURL)
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(session({
     secret: 'hi',
@@ -42,30 +45,42 @@ server.use(session({
     
 }));
 
+ /* const newReservation = {
+    date: '2024-06-26', // Replace with the desired date (YYYY-MM-DD format)
+    seatNum: '1', // Replace with the seat number
+    labNum: '1', // Replace with the lab number
+    time: '07:00 AM - 8:00 AM', // Replace with the start time // Replace with the end time
+    reservedBy: 'tester1', // Replace with the name of the person reserving
+    isAnon: false // Set to true for anonymous reservations
+  };
 
-/* const sampleReservation = new Reservation({
-    date: '23/06/2024',
-    seatNum: '1',
-    labNum: '1',
-    startTime: '08:00 AM',
-    endTime: '10:00 AM',
-    reservedBy: 'John Doe',
-    isAnon: false
-});
+  Reservation.create(newReservation)
+  .then(reservation => console.log('Reservation created:', reservation))
+  .catch(err => console.error('Error creating reservation:', err));  */
 
-// Save the sample reservation to the database
-sampleReservation.save()
-    .then(savedReservation => {
-        console.log('Sample reservation saved:');
-        console.log(savedReservation);
-    })
-    .catch(err => console.error('Error saving reservation:', err))
+/* async function insertLabSeats(labNum) {
+    const seats = [];
+    for (let i = 1; i <= 10; i++) {
+      seats.push({ labNum, seatNum: i, isTaken: false });
+    }
+  
+    try {
+      await Seat.insertMany(seats);
+      console.log(`Successfully inserted 10 seats for lab ${labNum}`);
+    } catch (error) {
+      console.error(`Error inserting seats for lab ${labNum}:`, error);
+    }
+  }
+  
+  // Insert seats for all 3 labs
+  (async () => {
+    await insertLabSeats(1); // Assuming lab numbers start from 1
+    await insertLabSeats(2);
+    await insertLabSeats(3);
+  })();
+  
+  console.log('Data insertion completed.'); */
 
-const handlebars = require('express-handlebars');
-server.set('view engine', 'hbs');
-server.engine('hbs', handlebars.engine({
-    extname: 'hbs'
-})); */
 
 server.use(express.static('public'));
 
@@ -75,7 +90,6 @@ server.get('/', function(req, resp){
         title: 'Lab Rat Login'
     });
 });
-
 
 server.get('/index', function(req, resp){
     resp.render('index',{
@@ -331,7 +345,6 @@ server.get('/nouser', function(req, resp){
 });
 
 
-
 server.get('/studentprofileedit', function(req, resp){
     console.log('Username editing:', req.session.username);
     const studentSearchQuery = { username: req.session.username };
@@ -354,7 +367,7 @@ server.get('/studentprofileedit', function(req, resp){
     });
 });
 
-server.use(bodyParser.urlencoded({ extended: true }));
+
 
 server.post('/studentprofileedit', function(req, resp){
     const username = req.body.username;
@@ -559,10 +572,50 @@ server.get('/logout', (req, res) => {
     });
 });
 
+
+server.post('/reserve', async (req, res) => {
+    try {
+        const { date, time, labNum, seatNum, isAnon } = req.body;
+        
+
+        const reservation = await Reservation.create({
+            date,
+            time,
+            labNum,
+            seatNum,
+            reservedBy: req.session.username,
+            isAnon
+        });
+
+        res.status(201).json({ message: 'Reservation created successfully', reservation });
+    } catch (error) {
+        console.error('Error creating reservation:', error);
+        res.status(500).json({ error: 'Failed to create reservation' });
+    }
+});
+
+// Example route to fetch seat availability for a specific lab and date
+server.get('/seatAvailability', async (req, res) => {
+    try {
+        const labNum = req.query.labNum; // Get lab number from query parameter
+        const date = req.query.date; // Get date from query parameter
+
+        // Example: Fetch seat availability data from your database
+        const seatAvailability = await Reservation.find({ labNum, date });
+
+        // Example response format: assuming seatAvailability is an array of reserved seat numbers
+        res.json({ success: true, seatAvailability });
+    } catch (error) {
+        console.error('Error fetching seat availability:', error);
+        res.status(500).json({ success: false, error: 'Failed to fetch seat availability' });
+    }
+});
+
 server.get('/studentbook', function(req, resp){
     resp.render('studentbook',{
         layout: 'layoutBook',
-        title: 'Book a Reservation'
+        title: 'Book a Reservation',
+        
     });
 });
 
@@ -573,7 +626,7 @@ server.get('/techbook', function(req, resp){
     });
 });
 
-const port =  process.env.PORT | 9090;
+const port =  process.env.PORT | 3000;
 server.listen(port, function(){
     console.log('Listening at port '+port);
 });

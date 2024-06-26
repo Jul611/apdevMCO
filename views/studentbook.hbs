@@ -1,118 +1,136 @@
+{{>studentNav}}
 
-    {{>studentNav}}
+<h1>Book a Workspace</h1>
 
-    <h1>Book a Workspace</h1>
-
+<form id = "reservationForm">
     <div class="datetimelab-fb">
+    <div class="date">
+        <label for="date">Date:</label>
+        <input type="date" id="date">
+    </div>
+    
+    <div class="time">
+        <label for="timeFromDropdown">Time:</label>
+        <select id="time">
+            <option value="7:00AM - 8:00AM">7:00AM - 8:00AM</option>
+            <option value="7:30AM - 8:30AM">7:30AM - 8:30AM</option>
+            <option value="8:00AM - 9:00AM">8:00AM - 9:00AM</option>
+            <option value="8:30AM - 9:30AM">8:30AM - 9:30AM</option>
+            <option value="9:00AM - 10:00AM">9:00AM - 10:00AM</option>
+            <option value="9:30AM - 10:30AM">9:30AM - 10:30AM</option>
+            <option value="10:00AM - 11:00AM">10:00AM - 11:00AM</option>
+            <option value="10:30AM - 11:30AM">10:30AM - 11:30AM</option>
+            <option value="11:00AM - 12:00PM">11:00AM - 12:00PM</option>
+            <option value="11:30AM - 12:30PM">11:30AM - 12:30PM</option>
+            <option value="12:00PM - 1:00PM">12:00PM - 1:00PM</option>
+            <option value="12:30PM - 1:30PM">12:30PM - 1:30PM</option>
+            <option value="1:00PM - 2:00PM">1:00PM - 2:00PM</option>
+            <option value="1:30PM - 2:30PM">1:30PM - 2:30PM</option>
+            <option value="2:00PM - 3:00PM">2:00PM - 3:00PM</option>
+            <option value="2:30PM - 3:30PM">2:30PM - 3:30PM</option>
+            <option value="3:00PM - 4:00PM">3:00PM - 4:00PM</option>
+            <option value="3:30PM - 4:30PM">3:30PM - 4:30PM</option>
+            <option value="4:00PM - 5:00PM">4:00PM - 5:00PM</option>
+            <option value="4:30PM - 5:30PM">4:30PM - 5:30PM</option>
+            <option value="5:00PM - 6:00PM">5:00PM - 6:00PM</option>
+            <option value="5:30PM - 6:30PM">5:30PM - 6:30PM</option>
+            <option value="6:00PM - 7:00PM">6:00PM - 7:00PM</option>
+            <option value="6:30PM - 7:30PM">6:30PM - 7:30PM</option>
+            <option value="7:00PM - 8:00PM">7:00PM - 8:00PM</option>
+            <option value="7:30PM - 8:30PM">7:30PM - 8:30PM</option>
+            <option value="8:00PM - 9:00PM">8:00PM - 9:00PM</option>
+            <option value="8:30PM - 9:30PM">8:30PM - 9:30PM</option>
+            <option value="9:00PM - 10:00PM">9:00PM - 10:00PM</option>
+        </select>
+    </div>
 
-        <div class = "date">
-        <label for="dateInput">Date:</label>
-        <input type="date" id="dateInput">
-        </div>
-        
-        <div class="time">
-            <label for="timeFromDropdown">From:</label>
-            <select id="timeFromDropdown">
-                <option value="07:00">07:00 AM</option>
-                <option value="07:30">07:30 AM</option>
-                <option value="08:00">08:00 AM</option>
-                <option value="08:30">08:30 AM</option>
-                <option value="09:00">09:00 AM</option>
-                <option value="09:30">09:30 AM</option>
-                <option value="10:00">10:00 AM</option>
-                <option value="10:30">10:30 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="11:30">11:30 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="12:30">12:30 PM</option>
-                <option value="13:00">01:00 PM</option>
-                <option value="13:30">01:30 PM</option>
-                <option value="14:00">02:00 PM</option>
-                <option value="14:30">02:30 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="15:30">03:30 PM</option>
-                <option value="16:00">04:00 PM</option>
-                <option value="16:30">04:30 PM</option>
-                <option value="17:00">05:00 PM</option>
-                <option value="17:30">05:30 PM</option>
-                <option value="18:00">06:00 PM</option>
-                <option value="18:30">06:30 PM</option>
-                <option value="19:00">07:00 PM</option>
-                <option value="19:30">07:30 PM</option>
-                <option value="20:00">08:00 PM</option>
-                <option value="20:30">08:30 PM</option>
-                <option value="21:00">09:00 PM</option>
-            </select>
-        </div>
-        
-        <div class="time">
-            <label for="timeToDropdown">To:</label>
-            <select id="timeToDropdown">
-                <option value="07:00">07:00 AM</option>
-                <option value="07:30">07:30 AM</option>
-                <option value="08:00">08:00 AM</option>
-                <option value="08:30">08:30 AM</option>
-                <option value="09:00">09:00 AM</option>
-                <option value="09:30">09:30 AM</option>
-                <option value="10:00">10:00 AM</option>
-                <option value="10:30">10:30 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="11:30">11:30 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="12:30">12:30 PM</option>
-                <option value="13:00">01:00 PM</option>
-                <option value="13:30">01:30 PM</option>
-                <option value="14:00">02:00 PM</option>
-                <option value="14:30">02:30 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="15:30">03:30 PM</option>
-                <option value="16:00">04:00 PM</option>
-                <option value="16:30">04:30 PM</option>
-                <option value="17:00">05:00 PM</option>
-                <option value="17:30">05:30 PM</option>
-                <option value="18:00">06:00 PM</option>
-                <option value="18:30">06:30 PM</option>
-                <option value="19:00">07:00 PM</option>
-                <option value="19:30">07:30 PM</option>
-                <option value="20:00">08:00 PM</option>
-                <option value="20:30">08:30 PM</option>
-                <option value="21:00">09:00 PM</option>
-            </select>
-        </div>
-      
-        <div class="dropdown">
-          <label for="labNumber">Lab Number:</label>
-          <select id="labNumber">
+    <div class="dropdown">
+        <label for="labNum">Lab Number:</label>
+        <select id="labNum">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-          </select>
-        </div>
-      
-      </div>
+        </select>
+    </div>
+</div>
 
+<div class="mainbox-fb">
+    <h2>Select Seats to Reserve</h2>
+    <div class="seats-grid">
+        <button type = "button" class="seat" id="seat1" data-seat="1">1</button>
+        <button type = "button" class="seat" id="seat2" data-seat="2">2</button>
+        <button type = "button" class="seat" id="seat3" data-seat="3">3</button>
+        <button type = "button" class="seat" id="seat4" data-seat="4">4</button>
+        <button type = "button" class="seat" id="seat5" data-seat="5">5</button>
+        <button type = "button" class="seat" id="seat6" data-seat="6">6</button>
+        <button type = "button" class="seat" id="seat7" data-seat="7">7</button>
+        <button type = "button" class="seat" id="seat8" data-seat="8">8</button>
+        <button type = "button" class="seat" id="seat9" data-seat="9">9</button>
+        <button type = "button" class="seat" id="seat10" data-seat="10">10</button>
+    </div>
+
+    <label><input type="checkbox" id="anonCheckbox">Anonymous Reservation</label><br>
     
-      <div class = "mainbox-fb">
+    
+</div>
+    <button class="submit" id="submitReservation"><b>Submit Reservation</b></button>
+</form>
 
-        <h2>Select Seats to Reserve</h2>
-        <div class = "seats-grid">
-            <button class="seat" id ="seat1">1</button>
-            <button class="seat" id="seat2">2</button>
-            <button class="seat" id="seat3">3</button>
-            <button class="seat">4</button>
-            <button class="seat">5</button>
-            <button class="seat">6</button>
-            <button class="seat">7</button>
-            <button class="seat">8</button>
-            <button class="seat">9</button>
-            <button class="seat">10</button>
-        </div>
 
-        <label><input type = "checkbox">Anonymous Reservation</label><br>
-        
-        <button class = "submit"><b>Submit Reservation</b></button>
+<script>
+document.getElementById('submitReservation').addEventListener('click', async (event) => {
+    event.preventDefault();
 
-      </div>
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const labNum = document.getElementById('labNum').value;
+    const seatElements = document.querySelectorAll('.seat.selected');
+    const seatNums = Array.from(seatElements).map(seat => seat.dataset.seat);
+    const isAnon = document.getElementById('anonCheckbox').checked;
 
-      
+    if (!date || !time || !labNum || seatNums.length === 0) {
+        alert('Please fill in all fields and select at least one seat.');
+        return;
+    }
 
+    try {
+        const results = [];
+        for (const seatNum of seatNums) {
+            const requestData = { date, time, labNum, seatNum, isAnon };
+            console.log('Sending request data:', requestData);
+
+            const response = await fetch('/reserve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+            results.push(result);
+        }
+
+        // Process results as needed
+        results.forEach(result => {
+            if (result.success) {
+                console.log('Reservation successful:', result.message);
+            } else {
+                console.error('Reservation failed:', result.error);
+            }
+        });
+
+        alert('All reservations submitted successfully.');
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to submit reservations.');
+    }
+});
+
+document.querySelectorAll('.seat').forEach(seat => {
+    seat.addEventListener('click', () => {
+        seat.classList.toggle('selected');
+    });
+});
+</script>

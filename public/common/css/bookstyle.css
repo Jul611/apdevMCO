@@ -179,11 +179,14 @@ label{
     cursor: pointer;
 }
 
-.seat.reserved {
-    background-color: #ccc;
+.seat.disabled {
+    background-color: grey;
     cursor: not-allowed;
 }
 
+.seat.selected {
+    background-color: green;
+}
 input[type="checkbox"] {
     transform: scale(1.2);
 }
