@@ -86,11 +86,12 @@ button{
     background-color: white;
     border-radius: 5px;
     padding: 10px;
-    border-color: gray;
+    border-color: white;
     border-style: solid;
     text-align: center;
     font-family: IBM Plex Sans;
     font-size: 18px;
+    margin-top: 1vh;
 }
 
 button:hover{

@@ -16,10 +16,6 @@ server.engine("hbs", handlebars.engine({
     extname: "hbs"
 }));
 
-function errorFn(err) {
-    console.log('Error found. Please trace!');
-    console.error(err);
-}
 
 const User = require('./models/user');
 const Reservation = require('./models/reservation');
@@ -594,23 +590,6 @@ server.post('/reserve', async (req, res) => {
     }
 });
 
-// Example route to fetch seat availability for a specific lab and date
-server.get('/seatAvailability', async (req, res) => {
-    try {
-        const labNum = req.query.labNum; // Get lab number from query parameter
-        const date = req.query.date; // Get date from query parameter
-
-        // Example: Fetch seat availability data from your database
-        const seatAvailability = await Reservation.find({ labNum, date });
-
-        // Example response format: assuming seatAvailability is an array of reserved seat numbers
-        res.json({ success: true, seatAvailability });
-    } catch (error) {
-        console.error('Error fetching seat availability:', error);
-        res.status(500).json({ success: false, error: 'Failed to fetch seat availability' });
-    }
-});
-
 server.get('/studentbook', function(req, resp){
     resp.render('studentbook',{
         layout: 'layoutBook',
@@ -619,6 +598,24 @@ server.get('/studentbook', function(req, resp){
     });
 });
 
+server.get('/reservations', async (req, res) => {
+    const { date, time, labNum, seatNum } = req.query;
+    console.log('Received query params:', req.query); // Debug log
+
+    try {
+        const query = { date, time, labNum };
+        if (seatNum) {
+            query.seatNum = seatNum;
+        }
+
+        const reservations = await Reservation.find(query);
+        console.log('Reservations found:', reservations); // Debug log
+        res.json(reservations);
+    } catch (err) {
+        console.error('Error fetching reservations:', err); // Debug log
+        res.status(500).send(err);
+    }
+});
 server.get('/techbook', function(req, resp){
     resp.render('techbook',{
         layout: 'layoutBook',
