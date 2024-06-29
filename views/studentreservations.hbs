@@ -1,68 +1,72 @@
-    <div class = "outermost-fb">
-    
-        {{>studentNav}}
-    
-        
 
-        <div class="main">
+<div class="outermost-fb">
+    {{> studentNav}}
+    <div class="main">
         <h1>My Reservations</h1>
-        
         <div class="reservations-grid">
-            <div class="reservation" id="item1">
-              
-                <div class = info-fb>
-
-                    <p>Lab Number: 1</p>
-                    <p>Seat Number: 2</p>
-                    <p>Date: 06/11/2024 </p>
-                    <p>From: 13:00:00 </p>
-                    <p>To: 14:30:00 </p>
-                    <p>Date Reserved: 05/25/2024</p>
-                    
-
-                    <div class = "buttons-fb">
-
-                        <h2>Edit</h2>
+            {{#each reservations}}
+            <div class="reservation" id="item{{@index}}">
+                <div class="info-fb">
+                    <p>Lab Number: {{this.labNum}}</p>
+                    <p>Seat Number: {{this.seatNum}}</p>
+                    <p>Date: {{this.date}}</p>
+                    <p>Time: {{this.time}}</p>
+                    <p>Date Reserved: {{this.createdAt}}</p>
+                    <div class="buttons-fb">
+                        <h2 class="edit-button" data-id="{{this._id}}">Edit</h2>
                         <h2>Cancel</h2>
-
                     </div>
                 </div>
-
             </div>
-
-            <div class="reservation" id="item2">
-                <div class = info-fb>
-
-                    <p>Lab Number: 3</p>
-                    <p>Seat Number: 1</p>
-                    <p>Date: 06/15/2024 </p>
-                    <p>From: 16:00:00 </p>
-                    <p>To: 17:30:00 </p>
-                    <p>Date Reserved: 06/01/2024</p>
-                    
-
-                    <div class = "buttons-fb">
-
-                        <h2>Edit</h2>
-                        <h2>Cancel</h2>
-
-                    </div>
-                </div>
-
-            </div>
-            
-
-            
-
-            
-
-            
-                    
-
-                    
-                </div>
-            </div>
-
-          </div>
+            {{/each}}
         </div>
     </div>
+</div>
+
+<!-- Edit Reservation Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="editForm">
+            <input type="hidden" name="id" id="reservationId">
+            <label for="labNum">Lab Number:</label>
+            <input type="text" name="labNum" id="labNum" required>
+            <label for="seatNum">Seat Number:</label>
+            <input type="text" name="seatNum" id="seatNum" required>
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date" required>
+            <label for="time">Time:</label>
+            <input type="time" name="time" id="time" required>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// JavaScript to handle modal and form submission
+document.querySelectorAll('.edit-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const reservationId = this.dataset.id;
+        // Fetch reservation data and populate the form
+        fetch(`/editreservation/${reservationId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('reservationId').value = data._id;
+                document.getElementById('labNum').value = data.labNum;
+                document.getElementById('seatNum').value = data.seatNum;
+                document.getElementById('date').value = data.date;
+                document.getElementById('time').value = data.time;
+                document.getElementById('editModal').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching reservation:', error);
+            });
+    });
+});
+
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('editModal').style.display = 'none';
+});
+
+
+</script>

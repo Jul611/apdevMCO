@@ -1,0 +1,17 @@
+<div class="outermost-fb">
+    {{> studentNav}}
+    <div class="main">
+        <h1>Edit Reservation</h1>
+        <form action="/reservation/edit/{{reservation._id}}" method="POST">
+            <label for="labNum">Lab Number:</label>
+            <input type="text" name="labNum" value="{{reservation.labNum}}" required>
+            <label for="seatNum">Seat Number:</label>
+            <input type="text" name="seatNum" value="{{reservation.seatNum}}" required>
+            <label for="date">Date:</label>
+            <input type="date" name="date" value="{{reservation.date}}" required>
+            <label for="time">Time:</label>
+            <input type="time" name="time" value="{{reservation.time}}" required>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>

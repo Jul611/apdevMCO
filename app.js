@@ -262,11 +262,31 @@ server.get('/techlabs', function(req, resp){
     });
 });
 
-server.get('/studentreservations', function(req, resp){
-    resp.render('studentreservations',{
-        layout: 'layoutReservation',
-        title: 'Your Reservations'
-    });
+server.get('/studentreservations', async function(req, resp) {
+    try {
+        // Fetch reservations for the logged-in user
+        const reservations = await Reservation.find({ reservedBy: req.session.username }).lean();
+        
+        // Render the template with the fetched reservations
+        resp.render('studentreservations', {
+            layout: 'layoutReservation',
+            title: 'Your Reservations',
+            reservations: reservations
+        });
+    } catch (err) {
+        console.error(err);
+        resp.status(500).send('Internal Server Error');
+    }
+});
+
+server.get('/editreservation/:id', async function(req, resp) {
+    try {
+        const reservation = await Reservation.findById(req.params.id).lean();
+        resp.json(reservation); // Send JSON response with reservation data
+    } catch (err) {
+        console.error(err);
+        resp.status(500).json({ error: 'Failed to fetch reservation' });
+    }
 });
 
 server.get('/techreservations', function(req, resp){
@@ -616,6 +636,7 @@ server.get('/reservations', async (req, res) => {
         res.status(500).send(err);
     }
 });
+
 server.get('/techbook', function(req, resp){
     resp.render('techbook',{
         layout: 'layoutBook',

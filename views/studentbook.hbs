@@ -58,93 +58,6 @@
         <h2>Select Seats to Reserve</h2>
         <div class="seats-grid">
             <button type="button" class="seat" id="seat1" data-seat="1">1</button>
-            
-            <button type="button" class="seat" id="seat2" data-seat="2">2</button>
-           
-            <button type="button" class="seat" id="seat3" data-seat="3">3</button>
-            
-            <button type="button" class="seat" id="seat4" data-seat="4">4</button>
-            
-            <button type="button" class="seat" id="seat5" data-seat="5">5</button>
-            
-            <button type="button" class="seat" id="seat6" data-seat="6">6</button>
-            
-            <button type="button" class="seat" id="seat7" data-seat="7">7</button>
-            
-            <button type="button" class="seat" id="seat8" data-seat="8">8</button>
-            
-            <button type="button" class="seat" id="seat9" data-seat="9">9</button>
-            
-            <button type="button" class="seat" id="seat10" data-seat="10">10</button>
-            
-        </div>
-
-        <label><input type="checkbox" id="anonCheckbox">Anonymous Reservation</label><br>
-    </div>
-
-    <button class="submit" id="submitReservation">Submit Reservation</button>
-</form>
-
-{{>studentNav}}
-
-<h1>Book a Workspace</h1>
-
-<form id="reservationForm">
-    <div class="datetimelab-fb">
-        <div class="date">
-            <label for="date">Date:</label>
-            <input type="date" id="date">
-        </div>
-
-        <div class="time">
-            <label for="timeFromDropdown">Time:</label>
-            <select id="time">
-                <option value="7:00AM - 8:00AM">7:00AM - 8:00AM</option>
-                <option value="7:30AM - 8:30AM">7:30AM - 8:30AM</option>
-                <option value="8:00AM - 9:00AM">8:00AM - 9:00AM</option>
-                <option value="8:30AM - 9:30AM">8:30AM - 9:30AM</option>
-                <option value="9:00AM - 10:00AM">9:00AM - 10:00AM</option>
-                <option value="9:30AM - 10:30AM">9:30AM - 10:30AM</option>
-                <option value="10:00AM - 11:00AM">10:00AM - 11:00AM</option>
-                <option value="10:30AM - 11:30AM">10:30AM - 11:30AM</option>
-                <option value="11:00AM - 12:00PM">11:00AM - 12:00PM</option>
-                <option value="11:30AM - 12:30PM">11:30AM - 12:30PM</option>
-                <option value="12:00PM - 1:00PM">12:00PM - 1:00PM</option>
-                <option value="12:30PM - 1:30PM">12:30PM - 1:30PM</option>
-                <option value="1:00PM - 2:00PM">1:00PM - 2:00PM</option>
-                <option value="1:30PM - 2:30PM">1:30PM - 2:30PM</option>
-                <option value="2:00PM - 3:00PM">2:00PM - 3:00PM</option>
-                <option value="2:30PM - 3:30PM">2:30PM - 3:30PM</option>
-                <option value="3:00PM - 4:00PM">3:00PM - 4:00PM</option>
-                <option value="3:30PM - 4:30PM">3:30PM - 4:30PM</option>
-                <option value="4:00PM - 5:00PM">4:00PM - 5:00PM</option>
-                <option value="4:30PM - 5:30PM">4:30PM - 5:30PM</option>
-                <option value="5:00PM - 6:00PM">5:00PM - 6:00PM</option>
-                <option value="5:30PM - 6:30PM">5:30PM - 6:30PM</option>
-                <option value="6:00PM - 7:00PM">6:00PM - 7:00PM</option>
-                <option value="6:30PM - 7:30PM">6:30PM - 7:30PM</option>
-                <option value="7:00PM - 8:00PM">7:00PM - 8:00PM</option>
-                <option value="7:30PM - 8:30PM">7:30PM - 8:30PM</option>
-                <option value="8:00PM - 9:00PM">8:00PM - 9:00PM</option>
-                <option value="8:30PM - 9:30PM">8:30PM - 9:30PM</option>
-                <option value="9:00PM - 10:00PM">9:00PM - 10:00PM</option>
-            </select>
-        </div>
-
-        <div class="dropdown">
-            <label for="labNum">Lab Number:</label>
-            <select id="labNum">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="mainbox-fb">
-        <h2>Select Seats to Reserve</h2>
-        <div class="seats-grid">
-            <button type="button" class="seat" id="seat1" data-seat="1">1</button>
             <button type="button" class="seat" id="seat2" data-seat="2">2</button>
             <button type="button" class="seat" id="seat3" data-seat="3">3</button>
             <button type="button" class="seat" id="seat4" data-seat="4">4</button>
@@ -196,29 +109,7 @@
                         seatElement.classList.add('taken');
                         seatElement.disabled = true;
 
-                        // Show reservation details if not anonymous
-                        if (!reservations[0].isAnon) {
-                            const reservedBy = reservations[0].reservedBy;
-                            const userId = reservations[0].userId; // Assuming userId is available in reservations
-
-                            const usernameElement = document.createElement('span');
-                            usernameElement.textContent = `Reserved by: ${reservedBy}`;
-
-                            if (userId) {
-                                usernameElement.classList.add('profile-link');
-                                usernameElement.dataset.userId = userId;
-                                usernameElement.addEventListener('click', () => {
-                                    window.location.href = `/searchprofile?username=${encodeURIComponent(reservedBy)}`;
-                                });
-                            }
-
-                            // Append the username element to the seatElement
-                            seatElement.innerHTML += '<br>'; // Separate line for clarity
-                            seatElement.appendChild(usernameElement);
-                        } else {
-                            // Handle anonymous reservations or any other logic here
-                            seatElement.innerHTML += '<br>Reserved Anonymously';
-                        }
+                        
                     }
                 }
             } catch (error) {

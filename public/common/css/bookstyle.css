@@ -200,5 +200,12 @@ input[type="checkbox"] {
 span{
     font-size: 14px;
     font-family: IBM Plex Sans;
-    margin-left: 10px;
+    margin: 0px;
+}
+
+.seat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Adjust spacing between button and username */
 }
