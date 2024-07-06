@@ -289,6 +289,62 @@ server.get('/editreservation/:id', async function(req, resp) {
     }
 });
 
+server.post('/editreservation/:id', (req, res) => {
+    const reservationId = req.params.id;
+    const updatedReservation = {
+        labNum: req.body.labNum,
+        seatNum: req.body.seatNum,
+        date: req.body.date,
+        time: req.body.time,
+    };
+
+    // Check for conflicting reservations
+    Reservation.findOne({
+        labNum: updatedReservation.labNum,
+        seatNum: updatedReservation.seatNum,
+        date: updatedReservation.date,
+        time: updatedReservation.time,
+        _id: { $ne: reservationId } // Exclude the current reservation being updated
+    })
+    .then(conflictingReservation => {
+        if (conflictingReservation) {
+            // Conflict found
+            res.status(409).send('Conflict detected with the reservation');
+        } else {
+            // No conflict, proceed with update
+            Reservation.findByIdAndUpdate(reservationId, updatedReservation, { new: true })
+                .then(updatedDoc => {
+                    res.json(updatedDoc);
+                })
+                .catch(error => {
+                    console.error('Error updating reservation:', error);
+                    res.status(500).send('Error updating reservation');
+                });
+        }
+    })
+    .catch(error => {
+        console.error('Error checking for conflicting reservations:', error);
+        res.status(500).send('Error checking for conflicting reservations');
+    });
+});
+
+server.delete('/cancelreservation/:id', (req, res) => {
+    const reservationId = req.params.id;
+    
+    // Implement cancellation logic here, e.g., delete reservation from database
+    Reservation.findByIdAndDelete(reservationId)
+        .then(deletedReservation => {
+            if (!deletedReservation) {
+                return res.status(404).send('Reservation not found');
+            }
+            res.status(200).json({ message: 'Reservation canceled successfully' });
+        })
+        .catch(error => {
+            console.error('Error canceling reservation:', error);
+            res.status(500).send('Error canceling reservation');
+        });
+});
+
 server.get('/techreservations', function(req, resp){
     resp.render('techreservations',{
         layout: 'layoutReservation',

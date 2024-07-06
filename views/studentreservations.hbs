@@ -30,20 +30,84 @@
         <form id="editForm">
             <input type="hidden" name="id" id="reservationId">
             <label for="labNum">Lab Number:</label>
-            <input type="text" name="labNum" id="labNum" required>
-            <label for="seatNum">Seat Number:</label>
-            <input type="text" name="seatNum" id="seatNum" required>
-            <label for="date">Date:</label>
+        <select name="labNum" id="labNum" required>
+            
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+
+        <label for="seatNum">Seat Number:</label>
+        <select name="seatNum" id="seatNum" required>
+
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
             <input type="date" name="date" id="date" required>
             <label for="time">Time:</label>
-            <input type="time" name="time" id="time" required>
+            <select id="time">
+                <option value="7:00AM - 8:00AM">7:00AM - 8:00AM</option>
+                <option value="7:30AM - 8:30AM">7:30AM - 8:30AM</option>
+                <option value="8:00AM - 9:00AM">8:00AM - 9:00AM</option>
+                <option value="8:30AM - 9:30AM">8:30AM - 9:30AM</option>
+                <option value="9:00AM - 10:00AM">9:00AM - 10:00AM</option>
+                <option value="9:30AM - 10:30AM">9:30AM - 10:30AM</option>
+                <option value="10:00AM - 11:00AM">10:00AM - 11:00AM</option>
+                <option value="10:30AM - 11:30AM">10:30AM - 11:30AM</option>
+                <option value="11:00AM - 12:00PM">11:00AM - 12:00PM</option>
+                <option value="11:30AM - 12:30PM">11:30AM - 12:30PM</option>
+                <option value="12:00PM - 1:00PM">12:00PM - 1:00PM</option>
+                <option value="12:30PM - 1:30PM">12:30PM - 1:30PM</option>
+                <option value="1:00PM - 2:00PM">1:00PM - 2:00PM</option>
+                <option value="1:30PM - 2:30PM">1:30PM - 2:30PM</option>
+                <option value="2:00PM - 3:00PM">2:00PM - 3:00PM</option>
+                <option value="2:30PM - 3:30PM">2:30PM - 3:30PM</option>
+                <option value="3:00PM - 4:00PM">3:00PM - 4:00PM</option>
+                <option value="3:30PM - 4:30PM">3:30PM - 4:30PM</option>
+                <option value="4:00PM - 5:00PM">4:00PM - 5:00PM</option>
+                <option value="4:30PM - 5:30PM">4:30PM - 5:30PM</option>
+                <option value="5:00PM - 6:00PM">5:00PM - 6:00PM</option>
+                <option value="5:30PM - 6:30PM">5:30PM - 6:30PM</option>
+                <option value="6:00PM - 7:00PM">6:00PM - 7:00PM</option>
+                <option value="6:30PM - 7:30PM">6:30PM - 7:30PM</option>
+                <option value="7:00PM - 8:00PM">7:00PM - 8:00PM</option>
+                <option value="7:30PM - 8:30PM">7:30PM - 8:30PM</option>
+                <option value="8:00PM - 9:00PM">8:00PM - 9:00PM</option>
+                <option value="8:30PM - 9:30PM">8:30PM - 9:30PM</option>
+                <option value="9:00PM - 10:00PM">9:00PM - 10:00PM</option>
+            </select>
             <button type="submit">Save</button>
         </form>
     </div>
 </div>
 
+<div id="cancelModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to cancel this reservation?</p>
+        <div class="modal-buttons">
+            <button id="confirmCancelBtn">Yes</button>
+            <button id="cancelCancelBtn">No</button>
+        </div>
+    </div>
+</div>
+
 <script>
-// JavaScript to handle modal and form submission
 document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function() {
         const reservationId = this.dataset.id;
@@ -51,6 +115,7 @@ document.querySelectorAll('.edit-button').forEach(button => {
         fetch(`/editreservation/${reservationId}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Fetched data:', data); // Log the fetched data
                 document.getElementById('reservationId').value = data._id;
                 document.getElementById('labNum').value = data.labNum;
                 document.getElementById('seatNum').value = data.seatNum;
@@ -68,5 +133,95 @@ document.querySelector('.close').addEventListener('click', function() {
     document.getElementById('editModal').style.display = 'none';
 });
 
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const reservationId = document.getElementById('reservationId').value;
+    const updatedReservation = {
+        labNum: document.getElementById('labNum').value,
+        seatNum: document.getElementById('seatNum').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+    };
+    
+    fetch(`/editreservation/${reservationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedReservation),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Conflict detected with the reservation');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Updated reservation:', data);
+        document.getElementById('editModal').style.display = 'none';
+        alert('Reservation updated successfully');
+        
+        location.reload(); // Reload the page to reflect changes
+    })
+    .catch(error => {
+        console.error(error.message);
+        alert(error.message); // Show the error message to the user
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cancelButtons = document.querySelectorAll('.reservation .buttons-fb h2:nth-child(2)');
+    const cancelModal = document.getElementById('cancelModal');
+    const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+    const cancelCancelBtn = document.getElementById('cancelCancelBtn');
+
+    // Open modal when clicking cancel button
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const reservationId = this.parentElement.querySelector('.edit-button').dataset.id;
+            // Set data-id attribute to modal for reference
+            cancelModal.dataset.id = reservationId;
+            cancelModal.style.display = 'block';
+        });
+    });
+
+    // Close modal when clicking the close button
+    document.querySelector('#cancelModal .close').addEventListener('click', function() {
+        cancelModal.style.display = 'none';
+    });
+
+    // Handle cancel or confirm actions
+    confirmCancelBtn.addEventListener('click', function() {
+        const reservationId = cancelModal.dataset.id;
+        
+        // Send DELETE request to server
+        fetch(`/cancelreservation/${reservationId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to cancel reservation');
+            } else {
+                console.log('Reservation canceled successfully');
+                location.reload();
+            }
+            // Optionally handle response or redirect
+            
+        })
+        .catch(error => {
+            console.error('Error canceling reservation:', error);
+            // Handle error, show user feedback, etc.
+        })
+        .finally(() => {
+            cancelModal.style.display = 'none';
+        });
+    });
+
+    cancelCancelBtn.addEventListener('click', function() {
+        cancelModal.style.display = 'none';
+    });
+});
 
 </script>
