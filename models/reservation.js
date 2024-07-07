@@ -7,6 +7,7 @@ const reservationSchema = new Schema({
     labNum: {type: String, required: true},
     time: {type: String, required: true},
     reservedBy: {type: String, required: true},
+    reservedByID: {type: String, required: true},
     isAnon: {type: Boolean, required: false, default: false}
 
 }, {timestamps: true });

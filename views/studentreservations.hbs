@@ -204,11 +204,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Failed to cancel reservation');
             } else {
-                console.log('Reservation canceled successfully');
-                location.reload();
+                console.log('Reservation cancelled')
+                alert('Reservation canceled successfully');
+               location.reload();
             }
-            // Optionally handle response or redirect
             
+             
         })
         .catch(error => {
             console.error('Error canceling reservation:', error);

@@ -153,6 +153,7 @@ server.post('/login', async (req, res) => {
         req.session.user = user;
         // Store username
         req.session.username = user.username;
+        req.session._id = user._id;
         if (user.usertype === 'student') {
             return res.redirect('/index');
         } else if (user.usertype === 'labTech') {
@@ -265,7 +266,7 @@ server.get('/techlabs', function(req, resp){
 server.get('/studentreservations', async function(req, resp) {
     try {
         // Fetch reservations for the logged-in user
-        const reservations = await Reservation.find({ reservedBy: req.session.username }).lean();
+        const reservations = await Reservation.find({ reservedByID: req.session._id }).lean();
         
         // Render the template with the fetched reservations
         resp.render('studentreservations', {
@@ -328,6 +329,7 @@ server.post('/editreservation/:id', (req, res) => {
     });
 });
 
+
 server.delete('/cancelreservation/:id', (req, res) => {
     const reservationId = req.params.id;
     
@@ -345,19 +347,30 @@ server.delete('/cancelreservation/:id', (req, res) => {
         });
 });
 
-server.get('/techreservations', function(req, resp){
-    resp.render('techreservations',{
-        layout: 'layoutReservation',
-        title: 'All Reservations'
-    });
+server.get('/techreservations', async function(req, resp) {
+    try {
+        // Fetch all reservations from the database
+        const allReservations = await Reservation.find({}).lean();
+        
+        // Render the template with the fetched reservations
+        resp.render('techreservations', {
+            layout: 'layoutReservation',
+            title: 'All Reservations',
+            reservations: allReservations
+        });
+    } catch (err) {
+        console.error(err);
+        resp.status(500).send('Internal Server Error');
+    }
 });
 
-server.get('/studentprofile', function(req, resp){
+server.get('/studentprofile', async function(req, resp){
     console.log('Username in session:', req.session.username);
     const studentSearchQuery = { username: req.session.username };
+    const reservations = await Reservation.find({ reservedByID: req.session._id }).lean();
 
     User.findOne(studentSearchQuery).lean().then(function (user) {
-        
+    
 
         console.log(user); // Make sure you have the correct object keys here
 
@@ -367,7 +380,8 @@ server.get('/studentprofile', function(req, resp){
             email: user.email,
             username: user.username,
             usertype: user.usertype,
-            desc: user.desc
+            desc: user.desc,
+            reservations: reservations
         });
 
     }).catch(function (error) {
@@ -648,7 +662,7 @@ server.get('/logout', (req, res) => {
 server.post('/reserve', async (req, res) => {
     try {
         const { date, time, labNum, seatNum, isAnon } = req.body;
-        
+        console.log(req.session._id);
 
         const reservation = await Reservation.create({
             date,
@@ -656,6 +670,7 @@ server.post('/reserve', async (req, res) => {
             labNum,
             seatNum,
             reservedBy: req.session.username,
+            reservedByID: req.session._id,
             isAnon
         });
 

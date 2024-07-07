@@ -43,17 +43,15 @@
                 </div>
 
                 <div class = "reserved-fb">
-                    <p class = "title">Reserved Workspaces</p>
-                    <div class = reserved-grid>
-                        
-                        <p>Lab 1: Workspace 2</p>
-                        <p>Lab 3: Workspace 1</p>
-                       
-                        
-                        
-                
-                        
+                    <p class = "title">Reservations</p>
+                    <div class = "reserved-grid">
+                        {{#each reservations}} 
+                                            
+                        <p class = "reservation">Lab {{ labNum }} Seat {{seatNum}}</p>
+                    
+                        {{/each}}
                     </div>
+                    
                 </div>
 
 
