@@ -19,7 +19,7 @@ server.engine("hbs", handlebars.engine({
 
 const User = require('./models/user');
 const Reservation = require('./models/reservation');
-const Seat = require('./models/seat');
+
 
 const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
 mongoose.connect(dbURL)
@@ -333,7 +333,6 @@ server.post('/editreservation/:id', (req, res) => {
 server.delete('/cancelreservation/:id', (req, res) => {
     const reservationId = req.params.id;
     
-    // Implement cancellation logic here, e.g., delete reservation from database
     Reservation.findByIdAndDelete(reservationId)
         .then(deletedReservation => {
             if (!deletedReservation) {
@@ -456,25 +455,35 @@ server.get('/studentprofileedit', function(req, resp){
 
 
 server.post('/studentprofileedit', function(req, resp){
-    const username = req.body.username;
+    const newUsername = req.body.username;
     const desc = req.body.desc;
     const pfp = req.body.pfp;
 
     console.log('Session username:', req.session.username);
-    console.log('Form data:', { username, desc, pfp });
+    console.log('Form data:', { newUsername, desc, pfp });
 
     const updateQuery = { username: req.session.username };
     const updateData = {
-        username: username,
+        username: newUsername,
         desc: desc,
         pfp: pfp
     };
 
     User.findOneAndUpdate(updateQuery, updateData, { new: true }).then(function(updatedUser) {
-        
         req.session.username = updatedUser.username;
         console.log('User updated:', updatedUser);
-        resp.redirect('/studentprofile');
+
+        // Update the reservedBy in the reservations 
+        const reservationUpdateQuery = { reservedBy: updateQuery.username };
+        const reservationUpdateData = { reservedBy: newUsername };
+
+        Reservation.updateMany(reservationUpdateQuery, reservationUpdateData).then(function(updateResult) {
+            console.log('Reservations updated:', updateResult);
+            resp.redirect('/studentprofile');
+        }).catch(function (error) {
+            console.error('Error updating reservations:', error);
+            resp.status(500).send('Error updating reservations');
+        });
     }).catch(function (error) {
         console.error('Error updating user:', error);
         resp.status(500).send('Error updating user');
@@ -662,7 +671,7 @@ server.get('/logout', (req, res) => {
 server.post('/reserve', async (req, res) => {
     try {
         const { date, time, labNum, seatNum, isAnon } = req.body;
-        console.log(req.session._id);
+        
 
         const reservation = await Reservation.create({
             date,

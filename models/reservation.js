@@ -8,7 +8,7 @@ const reservationSchema = new Schema({
     time: {type: String, required: true},
     reservedBy: {type: String, required: true},
     reservedByID: {type: String, required: true},
-    isAnon: {type: Boolean, required: false, default: false}
+    isAnon: {type: Boolean, required: true, default: false}
 
 }, {timestamps: true });
 

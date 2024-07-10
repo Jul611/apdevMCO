@@ -175,6 +175,7 @@ a {
 }
 
 .modal {
+    display: flex;
     display: none;
     position: fixed;
     z-index: 1;
@@ -183,16 +184,34 @@ a {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    
+    margin: 8% auto;
+    padding-bottom: 2vh;
+    padding-top: 2vh;
+    background-color:#B3D337;
+    border-style: solid;
+    border-color:black;
+    border-width: 0cap;
+    width: 60%;
+    font-family: IBM Plex Sans;
+    border-radius: 10px;
+    border-width: 1px;
+    
+}
+
+.modal-content p{
+    text-align: center;
+}
+
+.modal-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
 }
 
 .close {
@@ -207,4 +226,17 @@ a {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh
+}
+
+
+
+.close{
+    align-self: flex-start;
 }

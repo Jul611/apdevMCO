@@ -1,14 +1,22 @@
 
+
 <div class="outermost-fb">
     {{> techNav}}
     <div class="main">
-        <h1>All Reservations</h1>
+        <h1>My Reservations</h1>
         <div class="reservations-grid">
             {{#each reservations}}
             <div class="reservation" id="item{{@index}}">
                 <div class="info-fb">
                     <p>Lab Number: {{this.labNum}}</p>
                     <p>Seat Number: {{this.seatNum}}</p>
+                    <p>Reserved By: 
+                        {{#if this.isAnon}}
+                            Anonymous
+                        {{else}}
+                            {{this.reservedBy}}
+                        {{/if}}
+                    </p>
                     <p>Date: {{this.date}}</p>
                     <p>Time: {{this.time}}</p>
                     <p>Date Reserved: {{this.createdAt}}</p>
