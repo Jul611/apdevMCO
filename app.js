@@ -98,7 +98,7 @@ server.get('/index', function(req, resp){
 server.get('/techindex', function(req, resp){
     resp.render('techindex',{
         layout: 'layoutIndex',
-        title: 'Student Home'
+        title: 'Tech Home'
     });
 });
 
@@ -259,7 +259,7 @@ server.get('/studentlabs', function(req, resp){
 server.get('/techlabs', function(req, resp){
     resp.render('techlabs',{
         layout: 'layoutLabs',
-        title: 'Check Out Our Laboratories!'
+        title: 'Tech: Check Out Our Laboratories!'
     });
 });
 
@@ -354,7 +354,7 @@ server.get('/techreservations', async function(req, resp) {
         // Render the template with the fetched reservations
         resp.render('techreservations', {
             layout: 'layoutReservation',
-            title: 'All Reservations',
+            title: 'Tech: All Reservations',
             reservations: allReservations
         });
     } catch (err) {
@@ -720,7 +720,7 @@ server.get('/reservations', async (req, res) => {
 server.get('/techbook', function(req, resp){
     resp.render('techbook',{
         layout: 'layoutBook',
-        title: 'Book Walk-in'
+        title: 'Tech: Book Walk-in'
     });
 });
 
