@@ -38,7 +38,7 @@ server.use(cookieParser());
 
 server.use(session({
     secret: 'hi',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
         mongoUrl: dbURL,
@@ -89,14 +89,17 @@ server.use(express.static('public'));
 server.get('/', function(req, resp) {
     if (!req.session.user) {
         // User is not logged in, render the login page
+        console.log("log in normal");
         resp.render('login', {
             layout: 'layoutLogin',
             title: 'Lab Rat Login'
         });
     } else {
         // User is logged in, redirect based on user type
+        console.log("logged in from session");
         const user = req.session.user;
         if (user.usertype === 'student') {
+            
             return resp.redirect('/index');
         } else if (user.usertype === 'labTech') {
             return resp.redirect('/techindex');
@@ -178,17 +181,17 @@ server.post('/login', async (req, res) => {
         
 
         if (remember) {
-            //session save login
+            req.session.save();
             console.log("remembered");
         } else {
             
-            //normal login
             console.log("do not remember");
             if (user.usertype === 'student') {
                 return res.redirect('/index');
             } else if (user.usertype === 'labTech') {
                 return res.redirect('/techindex');
             }
+            
         }
 
     } catch (err) {
