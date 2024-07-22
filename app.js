@@ -1,5 +1,5 @@
 //npm init
-//npm i express express-handlebars body-parser
+//npm i express express-handlebars body-parser cookie-parser mongoose
 
 const express = require('express');
 const server = express();
@@ -9,7 +9,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
-const router = express.Router();
+const cookieParser = require('cookie-parser');
 
 server.set("view engine", "hbs");
 server.engine("hbs", handlebars.engine({
@@ -19,6 +19,7 @@ server.engine("hbs", handlebars.engine({
 
 const User = require('./models/user');
 const Reservation = require('./models/reservation');
+const Session = require('./models/session');
 
 
 const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
@@ -33,13 +34,18 @@ mongoose.connect(dbURL)
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(bodyParser.urlencoded({ extended: true }));
+server.use(cookieParser()); 
 
 server.use(session({
     secret: 'hi',
     resave: false,
-    saveUninitialized: false,
-    
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: dbURL,
+        collectionName: 'sessions'
+    }),
 }));
+
 
  /* const newReservation = {
     date: '2024-06-26', // Replace with the desired date (YYYY-MM-DD format)
@@ -80,11 +86,25 @@ server.use(session({
 
 server.use(express.static('public'));
 
-server.get('/', function(req, resp){
-    resp.render('login',{
-        layout: 'layoutLogin',
-        title: 'Lab Rat Login'
-    });
+server.get('/', function(req, resp) {
+    if (!req.session.user) {
+        // User is not logged in, render the login page
+        resp.render('login', {
+            layout: 'layoutLogin',
+            title: 'Lab Rat Login'
+        });
+    } else {
+        // User is logged in, redirect based on user type
+        const user = req.session.user;
+        if (user.usertype === 'student') {
+            return resp.redirect('/index');
+        } else if (user.usertype === 'labTech') {
+            return resp.redirect('/techindex');
+        } else {
+            // Handle other user types if necessary
+            return resp.redirect('/default'); // or some default route
+        }
+    }
 });
 
 server.get('/index', function(req, resp){
@@ -103,9 +123,11 @@ server.get('/techindex', function(req, resp){
 });
 
 // POST login
+
 server.post('/login', async (req, res) => {
     const { email, password, remember } = req.body;
     let errors = [];
+    
 
     // Check fields
     if (!email || !password) {
@@ -151,13 +173,22 @@ server.post('/login', async (req, res) => {
 
         // Password matched
         req.session.user = user;
-        // Store username
         req.session.username = user.username;
         req.session._id = user._id;
-        if (user.usertype === 'student') {
-            return res.redirect('/index');
-        } else if (user.usertype === 'labTech') {
-            return res.redirect('/techindex');
+        
+
+        if (remember) {
+            //session save login
+            console.log("remembered");
+        } else {
+            
+            //normal login
+            console.log("do not remember");
+            if (user.usertype === 'student') {
+                return res.redirect('/index');
+            } else if (user.usertype === 'labTech') {
+                return res.redirect('/techindex');
+            }
         }
 
     } catch (err) {
@@ -165,6 +196,7 @@ server.post('/login', async (req, res) => {
         return res.status(500).send('Server error');
     }
 });
+
 
 server.get('/register', function(req, resp){
     resp.render('register',{
