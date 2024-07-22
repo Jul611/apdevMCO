@@ -4,12 +4,12 @@
 const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const session = require('express-session');
+
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const MongoStore = require('connect-mongo');
+
 const handlebars = require("express-handlebars");
-const cookieParser = require('cookie-parser');
 
 server.set("view engine", "hbs");
 server.engine("hbs", handlebars.engine({
@@ -19,7 +19,7 @@ server.engine("hbs", handlebars.engine({
 
 const User = require('./models/user');
 const Reservation = require('./models/reservation');
-const Session = require('./models/session');
+
 
 
 const dbURL = 'mongodb+srv://julrquirante:julianroy61@labrat-db.uvpmsyo.mongodb.net/labrat-db?retryWrites=true&w=majority&appName=labrat-DB'
@@ -34,16 +34,13 @@ mongoose.connect(dbURL)
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cookieParser()); 
+
 
 server.use(session({
     secret: 'hi',
-    resave: true,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: dbURL,
-        collectionName: 'sessions'
-    }),
+    resave: false,
+    saveUninitialized: false,
+    
 }));
 
 
@@ -86,8 +83,8 @@ server.use(session({
 
 server.use(express.static('public'));
 
-server.get('/', function(req, resp) {
-    if (!req.session.user) {
+server.get('/', function(req, resp){
+    if (!req.session.rememberMe) {
         // User is not logged in, render the login page
         console.log("log in normal");
         resp.render('login', {
@@ -103,10 +100,7 @@ server.get('/', function(req, resp) {
             return resp.redirect('/index');
         } else if (user.usertype === 'labTech') {
             return resp.redirect('/techindex');
-        } else {
-            // Handle other user types if necessary
-            return resp.redirect('/default'); // or some default route
-        }
+        } 
     }
 });
 
@@ -129,8 +123,13 @@ server.get('/techindex', function(req, resp){
 
 server.post('/login', async (req, res) => {
     const { email, password, remember } = req.body;
+    req.session.rememberMe = (remember === 'on');
+
     let errors = [];
     
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log('Remember Me:', remember);
 
     // Check fields
     if (!email || !password) {
@@ -176,22 +175,13 @@ server.post('/login', async (req, res) => {
 
         // Password matched
         req.session.user = user;
+        // Store username
         req.session.username = user.username;
         req.session._id = user._id;
-        
-
-        if (remember) {
-            req.session.save();
-            console.log("remembered");
-        } else {
-            
-            console.log("do not remember");
-            if (user.usertype === 'student') {
-                return res.redirect('/index');
-            } else if (user.usertype === 'labTech') {
-                return res.redirect('/techindex');
-            }
-            
+        if (user.usertype === 'student') {
+            return res.redirect('/index');
+        } else if (user.usertype === 'labTech') {
+            return res.redirect('/techindex');
         }
 
     } catch (err) {
