@@ -417,10 +417,10 @@ server.get('/studentprofile', async function(req, resp){
 server.get('/searchprofile', function(req, resp) {
     const searchUsername = req.query.username; // Get username from query parameter
     console.log('search for', searchUsername);
-        
 
-    User.findOne({ username: searchUsername }).lean().then(function(foundUser) {
+    User.findOne({ username: searchUsername }).lean().then(async function(foundUser) {
         if (foundUser) {
+            const reservations = await Reservation.find({ reservedByID: foundUser._id }).lean();
             resp.render('searchprofile', {
                 layout: 'layoutSearchProfile', // Adjust layout as needed
                 title: 'User Profile',
@@ -429,18 +429,14 @@ server.get('/searchprofile', function(req, resp) {
                 username: foundUser.username,
                 usertype: foundUser.usertype,
                 pfp: foundUser.pfp,
+                reservations: reservations
             });
-        }
-        else{
+        } else {
             resp.render('nouser', {
                 layout: 'layoutNoUser',
                 title: 'User not Found'
             });
         }
-
-        
-        
-
     }).catch(function(error) {
         console.error('Error searching for user:', error);
         resp.status(500).send('Error searching for user');
@@ -644,29 +640,28 @@ server.post('/techdeleteUser', function(req, resp) {
 });
 
 server.get('/techsearchprofile', function(req, resp) {
-    const searchUsername = req.query.username; // Get username from query parameter
+    const searchUsername = req.query.username; 
     console.log('search for', searchUsername);
-        
 
-    User.findOne({ username: searchUsername }).lean().then(function(foundUser) {
+    User.findOne({ username: searchUsername }).lean().then(async function(foundUser) {
         if (foundUser) {
-            resp.render('techsearchprofile', {
-                layout: 'layoutSearchProfile', // Adjust layout as needed
+            const reservations = await Reservation.find({ reservedByID: foundUser._id }).lean();
+            resp.render('searchprofile', {
+                layout: 'layoutSearchProfile', 
                 title: 'User Profile',
                 desc: foundUser.desc,
                 email: foundUser.email,
                 username: foundUser.username,
                 usertype: foundUser.usertype,
                 pfp: foundUser.pfp,
+                reservations: reservations
             });
-        }
-        else{
-            resp.render('technouser', {
+        } else {
+            resp.render('nouser', {
                 layout: 'layoutNoUser',
                 title: 'User not Found'
             });
         }
-
     }).catch(function(error) {
         console.error('Error searching for user:', error);
         resp.status(500).send('Error searching for user');
@@ -733,7 +728,7 @@ server.get('/reservations', async (req, res) => {
             query.seatNum = seatNum;
         }
 
-        const reservations = await Reservation.find(query);
+        const reservations = await Reservation.find(query).select('reservedBy isAnon');
         console.log('Reservations found:', reservations); // Debug log
         res.json(reservations);
     } catch (err) {
